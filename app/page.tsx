@@ -6,12 +6,11 @@ export default function Page() {
       <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
         Irreversible
       </h1>
-      <p className="mb-4">
-        {`I'm a Vim enthusiast and tab advocate, finding unmatched efficiency in
-        Vim's keystroke commands and tabs' flexibility for personal viewing
-        preferences. This extends to my support for static typing, where its
-        early error detection ensures cleaner code, and my preference for dark
-        mode, which eases long coding sessions by reducing eye strain.`}
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/TfTODnT_dUw?si=KKFKiouh1ULbd8mf" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+      <p className="my-4">
+        {`Hello Friend.`}<br/>
+        {`Software Engineer. 愛猫家。`}<br/>
+        {`These New Puritans, Nils Frahm, ACRNM`}
       </p>
       <div className="my-8">
         <BlogPosts />
