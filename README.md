@@ -1,4 +1,4 @@
-# Portfolio Blog Starter
+# Irreversible
 
 This is a porfolio site template complete with a blog. Includes:
 
