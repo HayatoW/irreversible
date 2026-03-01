@@ -1,10 +1,8 @@
 import './global.css'
 import type { Metadata } from 'next'
 import { Noto_Sans_JP } from "next/font/google"
-import { GeistMono } from 'geist/font/mono'
+import localFont from 'next/font/local'
 import { Navbar } from './components/nav'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
 
@@ -40,6 +38,11 @@ const cx = (...classes) => classes.filter(Boolean).join(' ')
 
 const notoSansJp = Noto_Sans_JP();
 
+const GeistMono = localFont({
+  src: '../node_modules/geist/dist/fonts/geist-mono/GeistMono-Variable.woff2',
+  variable: '--font-geist-mono',
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -59,8 +62,6 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
-          <Analytics />
-          <SpeedInsights />
         </main>
       </body>
     </html>
