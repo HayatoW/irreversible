@@ -13,10 +13,6 @@
 /.next/
 /out/
 
-# vite
-/dist/
-/.vinext/
-
 # production
 /build
 
