@@ -2,6 +2,15 @@ import { createFileRoute } from '@tanstack/react-router'
 import { baseUrl } from 'app/config'
 import { getBlogPosts } from 'app/blog/utils'
 
+function escapeXml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;')
+}
+
 export const Route = createFileRoute('/rss')({
   server: {
     handlers: {
@@ -21,9 +30,9 @@ export const Route = createFileRoute('/rss')({
           .map(
             (post) =>
               `<item>
-          <title>${post.metadata.title}</title>
-          <link>${baseUrl}/blog/${post.slug}</link>
-          <description>${post.metadata.summary || ''}</description>
+          <title>${escapeXml(post.metadata.title)}</title>
+          <link>${escapeXml(`${baseUrl}/blog/${post.slug}`)}</link>
+          <description>${escapeXml(post.metadata.summary || '')}</description>
           <pubDate>${new Date(
             post.metadata.publishedAt
           ).toUTCString()}</pubDate>

@@ -1,0 +1,1 @@
+function i(t,f=!1){let l=new Date;t.includes("T")||(t=`${t}T00:00:00`);let a=new Date(t),o=l.getFullYear()-a.getFullYear(),r=l.getMonth()-a.getMonth(),n=l.getDate()-a.getDate(),e="";o>0?e=`${o}y ago`:r>0?e=`${r}mo ago`:n>0?e=`${n}d ago`:e="Today";let g=a.toLocaleString("ja-jp",{month:"numeric",day:"numeric",year:"numeric"});return f?`${g} (${e})`:g}export{i as f};

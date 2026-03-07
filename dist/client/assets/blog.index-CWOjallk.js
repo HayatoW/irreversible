@@ -1,0 +1,1 @@
+import{a as s,j as o}from"./main-BUW_yjwh.js";import{B as e}from"./posts-Bci1RQ3o.js";import"./utils-DKlYCi5N.js";function i(){const{posts:t}=s.useLoaderData();return o.jsxs("section",{children:[o.jsx("h1",{className:"font-semibold text-2xl mb-8 tracking-tighter",children:"Blog"}),o.jsx(e,{posts:t})]})}export{i as component};
