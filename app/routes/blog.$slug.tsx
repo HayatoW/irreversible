@@ -5,16 +5,22 @@ import { CustomMDX } from 'app/components/mdx'
 import { formatDate, getBlogPosts } from 'app/blog/utils'
 import { baseUrl } from 'app/config'
 
-const fetchPost = createServerFn({ method: 'GET' })
-  .inputValidator((slug: string) => slug)
-  .handler(async ({ data: slug }) => {
-    const post = getBlogPosts().find((p) => p.slug === slug)
-    if (!post) return null
-    const code = String(
-      await compile(post.content, { outputFormat: 'function-body' })
-    )
-    return { metadata: post.metadata, slug: post.slug, code }
-  })
+const baseServerFn = createServerFn({ method: 'GET' })
+const serverFnWithValidator = baseServerFn as typeof baseServerFn & {
+  validator?: typeof baseServerFn.inputValidator
+}
+
+const fetchPost = (
+  serverFnWithValidator.validator?.((slug: string) => slug) ??
+  serverFnWithValidator.inputValidator((slug: string) => slug)
+).handler(async ({ data: slug }) => {
+  const post = getBlogPosts().find((p) => p.slug === slug)
+  if (!post) return null
+  const code = String(
+    await compile(post.content, { outputFormat: 'function-body' })
+  )
+  return { metadata: post.metadata, slug: post.slug, code }
+})
 
 export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
