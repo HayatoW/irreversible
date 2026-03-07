@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router'
-import { runSync } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
 import { highlight } from 'sugar-high'
 import React from 'react'
@@ -100,8 +99,19 @@ let components = {
 }
 
 export function CustomMDX({ code }: { code: string }) {
-  const { default: Content } = runSync(code, {
-    ...(runtime as any),
-  })
+  // Evaluate the compiled MDX function body directly
+  // This avoids importing heavy Node.js dependencies from @mdx-js/mdx
+  // The compiled code expects JSX runtime destructured from arguments[0]
+  const fn = new Function(
+    'Fragment',
+    'jsx',
+    'jsxs',
+    code.replace('"use strict";\n', '').replace('arguments[0]', '{ Fragment, jsx, jsxs }')
+  )
+  const { default: Content } = fn(
+    runtime.Fragment,
+    runtime.jsx,
+    runtime.jsxs
+  )
   return <Content components={components} />
 }
