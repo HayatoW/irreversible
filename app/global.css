@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/noto-sans-jp';
+@import '@fontsource/geist-mono';
 
 ::selection {
   background-color: #47a3f3;
