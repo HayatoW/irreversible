@@ -14,7 +14,7 @@ type BlogPost = {
 export function BlogPosts({ posts }: { posts: BlogPost[] }) {
   return (
     <div>
-      {posts
+      {[...posts]
         .sort((a, b) => {
           if (
             new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
