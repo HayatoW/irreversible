@@ -27,21 +27,21 @@ function Table({ data }) {
 }
 
 function CustomLink(props) {
-  let href = props.href
+  let { href, ...rest } = props
 
   if (href.startsWith('/')) {
     return (
-      <Link to={href} {...props}>
+      <Link to={href} {...rest}>
         {props.children}
       </Link>
     )
   }
 
   if (href.startsWith('#')) {
-    return <a {...props} />
+    return <a href={href} {...rest} />
   }
 
-  return <a target="_blank" rel="noopener noreferrer" {...props} />
+  return <a href={href} target="_blank" rel="noopener noreferrer" {...rest} />
 }
 
 function RoundedImage(props) {
