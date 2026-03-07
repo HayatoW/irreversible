@@ -1,14 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getBlogPosts } from '../blog/utils'
+import { fetchBlogPosts } from '../blog/server'
 import { BlogPosts } from '../components/posts'
 
 export const Route = createFileRoute('/')({
-  loader: () => ({ posts: getBlogPosts() }),
+  loader: () => fetchBlogPosts(),
   component: HomePage,
 })
 
 function HomePage() {
-  const { posts } = Route.useLoaderData()
+  const posts = Route.useLoaderData()
   return (
     <section>
       <h1 className="mb-8 text-2xl font-semibold tracking-tighter">

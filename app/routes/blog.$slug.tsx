@@ -1,25 +1,14 @@
 import { createFileRoute, notFound } from '@tanstack/react-router'
-import { compile } from '@mdx-js/mdx'
-import { getBlogPosts, formatDate } from '../blog/utils'
+import { fetchBlogPost } from '../blog/server'
+import { formatDate } from '../blog/format'
 import { baseUrl } from '../config'
 import { CustomMDX } from '../components/mdx'
 
 export const Route = createFileRoute('/blog/$slug')({
   loader: async ({ params }) => {
-    const { slug } = params
-    const post = getBlogPosts().find((p) => p.slug === slug)
+    const post = await fetchBlogPost({ data: params.slug })
     if (!post) throw notFound()
-    const code = String(
-      await compile(post.content, { outputFormat: 'function-body' }),
-    )
-    return {
-      slug,
-      title: post.metadata.title,
-      publishedAt: post.metadata.publishedAt,
-      summary: post.metadata.summary,
-      image: post.metadata.image as string | undefined,
-      code,
-    }
+    return post
   },
   head: ({ loaderData }) => {
     if (!loaderData) return {}
@@ -57,7 +46,9 @@ function BlogPostPage() {
     datePublished: publishedAt,
     dateModified: publishedAt,
     description: summary,
-    image: image ? `${baseUrl}${image}` : `/og?title=${encodeURIComponent(title)}`,
+    image: image
+      ? `${baseUrl}${image}`
+      : `/og?title=${encodeURIComponent(title)}`,
     url: `${baseUrl}/blog/${slug}`,
     author: { '@type': 'Person', name: 'Hayato Watanabe' },
   }

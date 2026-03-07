@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { formatDate } from '../blog/utils'
+import { formatDate } from '../blog/format'
 
 type Post = {
   slug: string
