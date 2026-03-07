@@ -1,6 +1,6 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { MDXRemote } from 'next-mdx-remote/rsc'
+import { Link } from '@tanstack/react-router'
+import { runSync } from '@mdx-js/mdx'
+import * as runtime from 'react/jsx-runtime'
 import { highlight } from 'sugar-high'
 import React from 'react'
 
@@ -31,7 +31,7 @@ function CustomLink(props) {
 
   if (href.startsWith('/')) {
     return (
-      <Link href={href} {...props}>
+      <Link to={href} {...props}>
         {props.children}
       </Link>
     )
@@ -45,7 +45,7 @@ function CustomLink(props) {
 }
 
 function RoundedImage(props) {
-  return <Image alt={props.alt} className="rounded-lg" {...props} />
+  return <img alt={props.alt} className="rounded-lg" {...props} />
 }
 
 function Code({ children, ...props }) {
@@ -57,11 +57,11 @@ function slugify(str) {
   return str
     .toString()
     .toLowerCase()
-    .trim() // Remove whitespace from both ends of a string
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/&/g, '-and-') // Replace & with 'and'
-    .replace(/[^\w\-]+/g, '') // Remove all non-word characters except for -
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/&/g, '-and-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
 }
 
 function createHeading(level) {
@@ -99,11 +99,9 @@ let components = {
   Table,
 }
 
-export function CustomMDX(props) {
-  return (
-    <MDXRemote
-      {...props}
-      components={{ ...components, ...(props.components || {}) }}
-    />
-  )
+export function CustomMDX({ code }: { code: string }) {
+  const { default: Content } = runSync(code, {
+    ...(runtime as any),
+  })
+  return <Content components={components} />
 }

@@ -1,12 +1,20 @@
-import Link from 'next/link'
-import { formatDate, getBlogPosts } from 'app/blog/utils'
+import { Link } from '@tanstack/react-router'
+import { formatDate } from 'app/blog/utils'
 
-export function BlogPosts() {
-  let allBlogs = getBlogPosts()
+type BlogPost = {
+  slug: string
+  metadata: {
+    title: string
+    publishedAt: string
+    summary: string
+    image?: string
+  }
+}
 
+export function BlogPosts({ posts }: { posts: BlogPost[] }) {
   return (
     <div>
-      {allBlogs
+      {posts
         .sort((a, b) => {
           if (
             new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
@@ -19,7 +27,8 @@ export function BlogPosts() {
           <Link
             key={post.slug}
             className="flex flex-col space-y-1 mb-4"
-            href={`/blog/${post.slug}`}
+            to="/blog/$slug"
+            params={{ slug: post.slug }}
           >
             <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2">
               <p className="text-neutral-600 dark:text-neutral-400 w-[100px] tabular-nums">

@@ -1,5 +1,10 @@
 @import 'tailwindcss';
 
+@theme {
+  --font-sans: 'Noto Sans JP Variable', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+}
+
 ::selection {
   background-color: #47a3f3;
   color: #fefefe;
@@ -79,7 +84,6 @@ html {
 }
 
 .prose img {
-  /* Don't apply styles to next/image */
   @apply m-0;
 }
 
