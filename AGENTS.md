@@ -2,13 +2,13 @@
 
 ## Cursor Cloud specific instructions
 
-This is a Next.js portfolio/blog site ("Irreversible"). Single application, no monorepo.
+This is a TanStack Start portfolio/blog site ("Irreversible"). Single application, no monorepo.
 
 ### Services
 
 | Service | Command | Port | Notes |
 |---|---|---|---|
-| Next.js Dev Server | `pnpm dev` | 3000 | The only service needed |
+| TanStack Start Dev Server | `pnpm dev` | 3000 | The only service needed |
 
 ### Dev commands
 
@@ -19,6 +19,6 @@ This is a Next.js portfolio/blog site ("Irreversible"). Single application, no m
 
 ### Gotchas
 
-- `sharp` build scripts are ignored by pnpm's default policy. This is fine for development; sharp is only used for optional image optimization in production.
+- `esbuild` build scripts are ignored by pnpm's default policy in some environments. If Vite fails to start, run `pnpm approve-builds` and allow `esbuild`.
 - Blog posts are MDX files in `app/blog/posts/`. No database or environment variables are needed.
 - The `@types/react` version in `package.json` (18.x) is behind the actual React version (19.x). This is intentional; `skipLibCheck: true` in `tsconfig.json` avoids type errors.

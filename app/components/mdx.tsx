@@ -1,10 +1,24 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { MDXRemote } from 'next-mdx-remote/rsc'
+import { runSync } from '@mdx-js/mdx'
+import { Link } from '@tanstack/react-router'
 import { highlight } from 'sugar-high'
 import React from 'react'
+import * as runtime from 'react/jsx-runtime'
 
-function Table({ data }) {
+type TableProps = {
+  data: {
+    headers: string[]
+    rows: string[][]
+  }
+}
+
+type CustomLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement>
+
+type CustomMDXProps = {
+  code: string
+  components?: Record<string, React.ComponentType<any>>
+}
+
+function Table({ data }: TableProps) {
   let headers = data.headers.map((header, index) => (
     <th key={index}>{header}</th>
   ))
@@ -26,34 +40,51 @@ function Table({ data }) {
   )
 }
 
-function CustomLink(props) {
-  let href = props.href
-
+function CustomLink({ href = '', ...props }: CustomLinkProps) {
   if (href.startsWith('/')) {
-    return (
-      <Link href={href} {...props}>
-        {props.children}
-      </Link>
-    )
+    return <Link to={href} {...props} />
   }
 
   if (href.startsWith('#')) {
-    return <a {...props} />
+    return <a href={href} {...props} />
   }
 
-  return <a target="_blank" rel="noopener noreferrer" {...props} />
+  return <a href={href} target="_blank" rel="noopener noreferrer" {...props} />
 }
 
-function RoundedImage(props) {
-  return <Image alt={props.alt} className="rounded-lg" {...props} />
+function RoundedImage({
+  alt,
+  className = '',
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement>) {
+  return <img alt={alt} className={`rounded-lg ${className}`.trim()} {...props} />
 }
 
-function Code({ children, ...props }) {
-  let codeHTML = highlight(children)
+function Code({
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLElement> & { children: React.ReactNode }) {
+  const codeHTML = highlight(typeof children === 'string' ? children : String(children))
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
 }
 
-function slugify(str) {
+function flattenText(node: React.ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') {
+    return String(node)
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(flattenText).join('')
+  }
+
+  if (React.isValidElement(node)) {
+    return flattenText(node.props.children)
+  }
+
+  return ''
+}
+
+function slugify(str: string) {
   return str
     .toString()
     .toLowerCase()
@@ -65,8 +96,8 @@ function slugify(str) {
 }
 
 function createHeading(level) {
-  const Heading = ({ children }) => {
-    let slug = slugify(children)
+  const Heading = ({ children }: { children: React.ReactNode }) => {
+    const slug = slugify(flattenText(children))
     return React.createElement(
       `h${level}`,
       { id: slug },
@@ -86,7 +117,7 @@ function createHeading(level) {
   return Heading
 }
 
-let components = {
+const components = {
   h1: createHeading(1),
   h2: createHeading(2),
   h3: createHeading(3),
@@ -99,11 +130,11 @@ let components = {
   Table,
 }
 
-export function CustomMDX(props) {
-  return (
-    <MDXRemote
-      {...props}
-      components={{ ...components, ...(props.components || {}) }}
-    />
-  )
+export function CustomMDX({ code, components: overrides }: CustomMDXProps) {
+  const { default: Content } = runSync(code, {
+    ...runtime,
+    baseUrl: import.meta.url,
+  } as any)
+
+  return <Content components={{ ...components, ...(overrides || {}) }} />
 }

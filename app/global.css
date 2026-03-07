@@ -1,3 +1,5 @@
+@import '@fontsource-variable/noto-sans-jp';
+@import '@fontsource/geist-mono';
 @import 'tailwindcss';
 
 ::selection {
@@ -6,6 +8,8 @@
 }
 
 :root {
+  --font-sans: 'Noto Sans JP Variable', sans-serif;
+  --font-mono: 'Geist Mono', 'SFMono-Regular', ui-monospace, monospace;
   --sh-class: #2d5e9d;
   --sh-identifier: #354150;
   --sh-sign: #8996a3;
@@ -31,6 +35,11 @@
 
 html {
   min-width: 360px;
+  font-family: var(--font-sans);
+}
+
+body {
+  font-family: var(--font-sans);
 }
 
 .prose .anchor {
@@ -79,7 +88,7 @@ html {
 }
 
 .prose img {
-  /* Don't apply styles to next/image */
+  /* Keep markdown images flush with prose content */
   @apply m-0;
 }
 
@@ -128,6 +137,7 @@ pre::-webkit-scrollbar {
 pre {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+  font-family: var(--font-mono);
 }
 
 /* Remove Safari input shadow on mobile */
