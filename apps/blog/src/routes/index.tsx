@@ -1,8 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { blogs } from "../lib/blogs";
 
 export const Route = createFileRoute("/")({ component: App });
+const LATEST_BLOGS_LIMIT = 4;
 
 function App() {
+  const latestBlogs = blogs.slice(0, LATEST_BLOGS_LIMIT);
+
   return (
     <main className="page-wrap px-4 pb-8 pt-14">
       <section className="island-shell rise-in relative overflow-hidden rounded-4xl px-6 py-10 sm:px-10 sm:py-14">
@@ -20,19 +24,23 @@ function App() {
       </section>
 
       <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          ["Type-Safe Routing", "Routes and links stay in sync across every page."],
-          ["Server Functions", "Call server code from your UI without creating API boilerplate."],
-          ["Streaming by Default", "Ship progressively rendered responses for faster experiences."],
-          ["Tailwind Native", "Design quickly with utility-first styling and reusable tokens."],
-        ].map(([title, desc], index) => (
+        {latestBlogs.map((post, index) => (
           <article
-            key={title}
+            key={post.slug}
             className="island-shell feature-card rise-in rounded-2xl p-5"
             style={{ animationDelay: `${index * 90 + 80}ms` }}
           >
-            <h2 className="mb-2 text-base font-semibold text-(--sea-ink)">{title}</h2>
-            <p className="m-0 text-sm text-(--sea-ink-soft)">{desc}</p>
+            <p className="island-kicker mb-2">{post.publishedAt}</p>
+            <h2 className="mb-2 text-base font-semibold text-(--sea-ink)">
+              <Link
+                to="/blog/$slug"
+                params={{ slug: post.slug }}
+                className="hover:underline decoration-[rgba(107,61,138,0.45)]"
+              >
+                {post.title}
+              </Link>
+            </h2>
+            <p className="text-sm text-(--sea-ink-soft)">{post.summary}</p>
           </article>
         ))}
       </section>
