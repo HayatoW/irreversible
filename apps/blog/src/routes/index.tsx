@@ -8,30 +8,15 @@ function App() {
       <section className="island-shell rise-in relative overflow-hidden rounded-4xl px-6 py-10 sm:px-10 sm:py-14">
         <div className="pointer-events-none absolute -left-20 -top-24 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(180,140,200,0.32),transparent_66%)]" />
         <div className="pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(107,61,138,0.18),transparent_66%)]" />
-        <p className="island-kicker mb-3">TanStack Start Base Template</p>
+        <p className="island-kicker mb-3">blog</p>
         <h1 className="display-title mb-5 max-w-3xl text-4xl leading-[1.02] font-bold tracking-tight text-(--sea-ink) sm:text-6xl">
-          Start simple, ship quickly.
+          Irreversible
         </h1>
         <p className="mb-8 max-w-2xl text-base text-(--sea-ink-soft) sm:text-lg">
-          This base starter intentionally keeps things light: two routes, clean structure, and the
-          essentials you need to build from scratch.
+          Hello Friend. I build software and share my place with two cats. When I'm not coding, I'm
+          usually listening to These New Puritans or Nils Frahm, or thinking about design—especially
+          ACRNM's take on function and form.
         </p>
-        <div className="flex flex-wrap gap-3">
-          <a
-            href="/about"
-            className="rounded-full border border-[rgba(139,95,168,0.3)] bg-[rgba(180,140,200,0.14)] px-5 py-2.5 text-sm font-semibold text-(--lagoon-deep) no-underline transition hover:-translate-y-0.5 hover:bg-[rgba(180,140,200,0.24)]"
-          >
-            About This Starter
-          </a>
-          <a
-            href="https://tanstack.com/router"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full border border-[rgba(45,27,61,0.2)] bg-white/50 px-5 py-2.5 text-sm font-semibold text-(--sea-ink) no-underline transition hover:-translate-y-0.5 hover:border-[rgba(45,27,61,0.35)]"
-          >
-            Router Guide
-          </a>
-        </div>
       </section>
 
       <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -50,23 +35,6 @@ function App() {
             <p className="m-0 text-sm text-(--sea-ink-soft)">{desc}</p>
           </article>
         ))}
-      </section>
-
-      <section className="island-shell mt-8 rounded-2xl p-6">
-        <p className="island-kicker mb-2">Quick Start</p>
-        <ul className="m-0 list-disc space-y-2 pl-5 text-sm text-(--sea-ink-soft)">
-          <li>
-            Edit <code>src/routes/index.tsx</code> to customize the home page.
-          </li>
-          <li>
-            Update <code>src/components/Header.tsx</code> and <code>src/components/Footer.tsx</code>{" "}
-            for brand links.
-          </li>
-          <li>
-            Add routes in <code>src/routes</code> and tweak visual tokens in{" "}
-            <code>src/styles.css</code>.
-          </li>
-        </ul>
       </section>
     </main>
   );
