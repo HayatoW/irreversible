@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "eamodio.gitlens",
+    "oxc.oxc-vscode",
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "VoidZero.vite-plus-extension-pack"
+  ]
+}
