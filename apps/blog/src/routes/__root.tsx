@@ -30,7 +30,17 @@ export const Route = createRootRoute({
     ],
   }),
   shellComponent: RootDocument,
+  notFoundComponent: NotFoundPage,
 });
+
+function NotFoundPage() {
+  return (
+    <main className="mx-auto w-full max-w-3xl px-6 py-16 text-center">
+      <h1 className="text-2xl font-semibold">404 - Page Not Found</h1>
+      <p className="mt-3 text-muted-foreground">The page you are looking for does not exist.</p>
+    </main>
+  );
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
