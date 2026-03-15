@@ -29,5 +29,9 @@ vp run build -r
 - Run the development server:
 
 ```bash
+# Website
 vp run dev --host
+
+# Blog
+vp dev apps/blog --host
 ```

@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "bradlc.vscode-tailwindcss",
     "eamodio.gitlens",
     "oxc.oxc-vscode",
     "streetsidesoftware.code-spell-checker",
