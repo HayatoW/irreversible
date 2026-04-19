@@ -2,7 +2,7 @@ import { defineConfig } from "vite-plus";
 
 export default defineConfig({
   // https://vite.dev/guide/troubleshooting#dev-containers-vs-code-port-forwarding
-  server: { host: "127.0.0.1" },
+  server: "127.0.0.1",
   staged: {
     "*": "vp check --fix",
   },
