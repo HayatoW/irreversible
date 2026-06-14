@@ -62,7 +62,7 @@ importers:
         version: 1.17.0(react@19.2.7)
       nitro:
         specifier: npm:nitro-nightly@latest
-        version: nitro-nightly@3.0.260610-beta(@voidzero-dev/vite-plus-core@0.1.24(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.4))(chokidar@5.0.0)(dotenv@17.3.1)(giget@2.0.0)(jiti@2.7.0)(lru-cache@11.3.6)
+        version: nitro-nightly@3.0.1-20260611-123640-7765bcb7(@voidzero-dev/vite-plus-core@0.1.24(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.4))(chokidar@5.0.0)(dotenv@17.3.1)(giget@2.0.0)(jiti@2.7.0)(lru-cache@11.3.6)
       react:
         specifier: ^19.2.7
         version: 19.2.7
@@ -82,15 +82,15 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0
       tailwindcss:
-        specifier: ^4.3.0
-        version: 4.3.0
+        specifier: ^4.3.1
+        version: 4.3.1
       tw-animate-css:
         specifier: ^1.3.6
         version: 1.4.0
     devDependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.16
-        version: 0.5.19(tailwindcss@4.3.0)
+        version: 0.5.19(tailwindcss@4.3.1)
       '@tanstack/devtools-vite':
         specifier: latest
         version: 0.7.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@voidzero-dev/vite-plus-core@0.1.24(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.4))
@@ -1988,19 +1988,22 @@ packages:
     resolution: {integrity: sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==}
     engines: {node: '>=0.12'}
 
-  env-runner@0.1.13:
-    resolution: {integrity: sha512-zRQU0NpfOU1NYg8TslQQgDZYZg6Cfx6vfsc9Zzv+vDMzWgtXqSURzfW9GFEbsuIpplOnF41T8VLoy9h8TNMDnw==}
+  env-runner@0.1.14:
+    resolution: {integrity: sha512-qdk5mmgFsd+zPg3r1bkZ+IbvpfUfypyDvNhMGypSMRpz7kOa/kI6SpW8fgyukuEM4Lo24M65r+1Ne0DtT7vFBA==}
     hasBin: true
     peerDependencies:
       '@netlify/runtime': ^4.1.23
       '@vercel/queue': ^0.2.0
       miniflare: ^4.20260515.0
+      wrangler: ^4.0.0
     peerDependenciesMeta:
       '@netlify/runtime':
         optional: true
       '@vercel/queue':
         optional: true
       miniflare:
+        optional: true
+      wrangler:
         optional: true
 
   es-module-lexer@1.7.0:
@@ -2442,8 +2445,8 @@ packages:
   nf3@0.3.17:
     resolution: {integrity: sha512-N9zEWySuJFw+gR0lhS5863YsvNeudOdqRyFvNb+jMXbeTJOdrjDqkCpDginIZfUm0LzT1t1nCRiDeqQm/8kirQ==}
 
-  nitro-nightly@3.0.260610-beta:
-    resolution: {integrity: sha512-jSyJ0s3CktymmzJpvRxIMmfEqYOPlE8SwvTJT9oWkimAn7aFphjSToHFyI5G913w09iW1sXxnbQSemVEUiIViQ==}
+  nitro-nightly@3.0.1-20260611-123640-7765bcb7:
+    resolution: {integrity: sha512-/u0D+xj1uZt6RNJbeNzBKcEE/8lBf3BVDbLQ9OxbS/FUgWrYHNcr1CfS0ghOgVEcIcYCEUVHE6G4VbAI9MjOlA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -2480,8 +2483,8 @@ packages:
     resolution: {integrity: sha512-Uzmd6LXpouKo8EUK68IjH4+E01w/hXyV3R3g/geCJo+rXLNfh1xucB+LOzYEOQPSiUK3h/xZf0cQGcSsmyL2Og==}
     engines: {node: '>=18'}
 
-  nypm@0.6.6:
-    resolution: {integrity: sha512-vRyr0r4cbBapw07Xw8xrj9Teq3o7MUD35rSaTcanDbW+aK2XHDgJFiU6ZTj2GBw7Q12ysdsyFss+Vdz4hQ0Y6Q==}
+  nypm@0.6.7:
+    resolution: {integrity: sha512-s3ds97SD5pd1dULE+tHUk1DrV0cSHOnsfpcdGATJ8JpBo21DoKqN9exTH4/2nhPQNOLomBdTFMicN94S4DrZrQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2726,6 +2729,9 @@ packages:
 
   tailwindcss@4.3.0:
     resolution: {integrity: sha512-y6nxMGB1nMW9R6k96e5gdIFzcfL/gTJRNaqGes1YvkLnPVXzWgbqFF2yLC0T8G774n24cx3Pe8XrKoniCOAH+Q==}
+
+  tailwindcss@4.3.1:
+    resolution: {integrity: sha512-hk+TB1m+K8CYNrP6rjQaq/Y+4Zylwpa87mLYBKCunwnnQ9p+fHb7kmSfGqyEJoxF/O6CDyABWVFEafNSYKll+Q==}
 
   tapable@2.3.3:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
@@ -3788,10 +3794,10 @@ snapshots:
       '@tailwindcss/oxide-win32-arm64-msvc': 4.3.0
       '@tailwindcss/oxide-win32-x64-msvc': 4.3.0
 
-  '@tailwindcss/typography@0.5.19(tailwindcss@4.3.0)':
+  '@tailwindcss/typography@0.5.19(tailwindcss@4.3.1)':
     dependencies:
       postcss-selector-parser: 6.0.10
-      tailwindcss: 4.3.0
+      tailwindcss: 4.3.1
 
   '@tailwindcss/vite@4.3.0(@voidzero-dev/vite-plus-core@0.1.24(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.4))':
     dependencies:
@@ -4595,7 +4601,7 @@ snapshots:
 
   entities@6.0.1: {}
 
-  env-runner@0.1.13:
+  env-runner@0.1.14:
     dependencies:
       crossws: 0.4.6(srvx@0.11.16)
       exsolve: 1.0.8
@@ -4666,7 +4672,7 @@ snapshots:
       consola: 3.4.2
       defu: 6.1.7
       node-fetch-native: 1.6.7
-      nypm: 0.6.6
+      nypm: 0.6.7
       pathe: 2.0.3
     optional: true
 
@@ -5281,12 +5287,12 @@ snapshots:
 
   nf3@0.3.17: {}
 
-  nitro-nightly@3.0.260610-beta(@voidzero-dev/vite-plus-core@0.1.24(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.4))(chokidar@5.0.0)(dotenv@17.3.1)(giget@2.0.0)(jiti@2.7.0)(lru-cache@11.3.6):
+  nitro-nightly@3.0.1-20260611-123640-7765bcb7(@voidzero-dev/vite-plus-core@0.1.24(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(typescript@6.0.3)(yaml@2.8.4))(chokidar@5.0.0)(dotenv@17.3.1)(giget@2.0.0)(jiti@2.7.0)(lru-cache@11.3.6):
     dependencies:
       consola: 3.4.2
       crossws: 0.4.6(srvx@0.11.16)
       db0: 0.3.4
-      env-runner: 0.1.13
+      env-runner: 0.1.14
       h3: 2.0.1-rc.22(crossws@0.4.6(srvx@0.11.16))
       hookable: 6.1.1
       nf3: 0.3.17
@@ -5332,13 +5338,14 @@ snapshots:
       - mysql2
       - sqlite3
       - uploadthing
+      - wrangler
 
   node-fetch-native@1.6.7:
     optional: true
 
   node-releases@2.0.47: {}
 
-  nypm@0.6.6:
+  nypm@0.6.7:
     dependencies:
       citty: 0.2.2
       pathe: 2.0.3
@@ -5832,6 +5839,8 @@ snapshots:
   tailwind-merge@3.6.0: {}
 
   tailwindcss@4.3.0: {}
+
+  tailwindcss@4.3.1: {}
 
   tapable@2.3.3: {}
 
