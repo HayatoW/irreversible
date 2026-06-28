@@ -1,3 +1,4 @@
+import { Box, Container, Heading, Text } from "@chakra-ui/react";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import Markdown from "../../components/Markdown";
 import { getBlogBySlug } from "../../lib/blogs";
@@ -17,18 +18,43 @@ function BlogPostPage() {
   const post = Route.useLoaderData();
 
   return (
-    <main className="page-wrap px-4 py-14">
-      <article className="island-shell rounded-2xl p-6 sm:p-8">
-        <p className="island-kicker mb-2">{post.publishedAt}</p>
-        <h1 className="display-title mb-3 text-4xl font-bold text-(--sea-ink) sm:text-5xl">
-          {post.title}
-        </h1>
-        <p className="m-0 text-(--sea-ink-soft)">{post.summary}</p>
-        <Markdown
-          content={post.content}
-          className="prose prose-slate prose-headings:text-(--sea-ink) prose-p:text-(--sea-ink-soft) prose-strong:text-(--sea-ink) mt-8 max-w-none"
-        />
-      </article>
-    </main>
+    <Box as="main" px="4" py="14">
+      <Container maxW="container.lg">
+        <Box
+          as="article"
+          rounded="2xl"
+          p={{ base: "6", sm: "8" }}
+          borderWidth="1px"
+          borderColor="border.subtle"
+          bg="bg.subtle"
+        >
+          <Text
+            fontSize="xs"
+            fontWeight="bold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="purple.500"
+            mb="2"
+          >
+            {post.publishedAt}
+          </Text>
+          <Heading
+            as="h1"
+            size={{ base: "3xl", sm: "4xl" }}
+            fontFamily="'Fraunces', Georgia, serif"
+            fontWeight="bold"
+            mb="3"
+          >
+            {post.title}
+          </Heading>
+          <Text color="fg.muted" mb="0">
+            {post.summary}
+          </Text>
+          <Box mt="8">
+            <Markdown content={post.content} />
+          </Box>
+        </Box>
+      </Container>
+    </Box>
   );
 }

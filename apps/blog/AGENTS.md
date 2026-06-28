@@ -1,7 +1,8 @@
-# shadcn instructions
+# Chakra UI instructions
 
-Use the latest version of Shadcn to install new components, like this command to add a button component:
+This app uses Chakra UI v3 with `next-themes` for color mode.
 
-```bash
-vp dlx shadcn@latest add button
-```
+- Import components from `@chakra-ui/react`
+- The Provider is at `src/components/ui/provider.tsx`
+- Color mode toggle is at `src/components/ui/color-mode.tsx`
+- Use Chakra's default theme (semantic tokens like `fg.default`, `fg.muted`, `bg.subtle`, `border.subtle`)
