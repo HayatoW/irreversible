@@ -1,4 +1,3 @@
-import { Box, Container, Heading, Link as ChakraLink, Stack, Text } from "@chakra-ui/react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { blogs } from "../../lib/blogs";
 
@@ -8,43 +7,24 @@ export const Route = createFileRoute("/blog/")({
 
 function Blog() {
   return (
-    <Box as="main" px="4" py="14">
-      <Container maxW="container.lg">
-        <Stack gap="4">
-          {blogs.map((post) => (
-            <Box
-              key={post.slug}
-              as="article"
-              rounded="2xl"
-              p={{ base: "5", sm: "6" }}
-              borderWidth="1px"
-              borderColor="border.subtle"
-              bg="bg.subtle"
-            >
-              <Text
-                fontSize="xs"
-                fontWeight="bold"
-                letterSpacing="wider"
-                textTransform="uppercase"
-                color="purple.500"
-                mb="2"
+    <main className="page-wrap px-4 py-14">
+      <section className="grid gap-4">
+        {blogs.map((post) => (
+          <article key={post.slug} className="island-shell rounded-2xl p-5 sm:p-6">
+            <p className="island-kicker mb-2">{post.publishedAt}</p>
+            <h2 className="text-2xl font-semibold text-(--sea-ink)">
+              <Link
+                to="/blog/$slug"
+                params={{ slug: post.slug }}
+                className="hover:underline decoration-[rgba(107,61,138,0.45)]"
               >
-                {post.publishedAt}
-              </Text>
-              <Heading as="h2" fontSize="2xl" fontWeight="semibold">
-                <ChakraLink asChild _hover={{ textDecoration: "underline" }}>
-                  <Link to="/blog/$slug" params={{ slug: post.slug }}>
-                    {post.title}
-                  </Link>
-                </ChakraLink>
-              </Heading>
-              <Text fontSize="sm" lineHeight="tall" color="fg.muted" mt="2">
-                {post.summary}
-              </Text>
-            </Box>
-          ))}
-        </Stack>
-      </Container>
-    </Box>
+                {post.title}
+              </Link>
+            </h2>
+            <p className="text-sm leading-7 text-(--sea-ink-soft)">{post.summary}</p>
+          </article>
+        ))}
+      </section>
+    </main>
   );
 }
