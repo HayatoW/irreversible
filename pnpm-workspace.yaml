@@ -8,19 +8,15 @@ catalogMode: prefer
 catalog:
   "@types/node": ^26
   typescript: ^7
-  vite: npm:@voidzero-dev/vite-plus-core@0.3.3
-  vite-plus: 0.3.3
-  vitest: 4.1.11
+  vite: npm:@voidzero-dev/vite-plus-core@1.0.0-rc.0
+  vite-plus: 1.0.0-rc.0
 overrides:
   vite@*: "catalog:"
-  vitest@*: "catalog:"
 peerDependencyRules:
   allowAny:
     - vite
-    - vitest
   allowedVersions:
     vite: "*"
-    vitest: "*"
 onlyBuiltDependencies:
   - esbuild
   - lightningcss
