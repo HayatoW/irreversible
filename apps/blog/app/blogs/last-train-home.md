@@ -9,13 +9,12 @@ summary: "転職とこれまでの振り返り"
 これまで振り返ると、技術的な観点でのみ会社を選んできた。<br/>自身の役割や視点が変化していく中で情熱を持ち続けるにはもっと大切なことがあると気づいた。
 
 <iframe
-  className="w-full aspect-video"
   src="https://www.youtube.com/embed/66Ne5dVDfLM?si=epdVSOa3cm0gtxsj"
   title="YouTube video player"
-  frameBorder="0"
+  frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-  referrerPolicy="strict-origin-when-cross-origin"
-  allowFullScreen
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
 ></iframe>
 
 ## 行き詰まり

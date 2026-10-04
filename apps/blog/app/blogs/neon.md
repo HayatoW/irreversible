@@ -7,13 +7,12 @@ summary: "Porsche 911 は素晴らしい"
 緑の中を走り抜けてく真紅なポルシェ
 
 <iframe
-  className="w-full aspect-video"
   src="https://www.youtube.com/embed/I6p9cj3QqmM?si=O4sUa3uutO9Y33Ws"
   title="YouTube video player"
-  frameBorder="0"
+  frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-  referrerPolicy="strict-origin-when-cross-origin"
-  allowFullScreen
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen
 ></iframe>
 
 ## Porsche 911 の魅力

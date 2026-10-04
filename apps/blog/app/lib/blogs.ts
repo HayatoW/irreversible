@@ -1,3 +1,21 @@
+import * as fs from "node:fs";
+import * as path from "node:path";
+
+import rehypeRaw from "rehype-raw";
+import rehypeStringify from "rehype-stringify";
+import remarkGfm from "remark-gfm";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { unified } from "unified";
+
+// `app/blogs/` は本人が書く信頼できるコンテンツのため、iframe などの生 HTML はあえてサニタイズせずそのまま通す
+const processor = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkRehype, { allowDangerousHtml: true })
+  .use(rehypeRaw)
+  .use(rehypeStringify);
+
 /**
  * ブログのフロントマター情報
  */
@@ -16,19 +34,24 @@ export type Blog = BlogFrontMatter & {
    */
   slug: string;
   /**
-   * フロントマターを除いた Markdown 本文
+   * フロントマターを除いた本文を HTML へ変換したもの
    */
-  content: string;
+  html: string;
 };
 
 /**
- * 各ブログファイルの内容を `raw` クエリとして文字列で取得する
+ * `app/blogs` ディレクトリ配下の Markdown ファイルを文字列で取得する
  */
-const blogModules = import.meta.glob<true, string, string>("../blogs/*.md", {
-  eager: true,
-  query: "?raw",
-  import: "default",
-});
+const blogsDir = path.join(import.meta.dirname, "../blogs");
+const blogModules: Record<string, string> = {};
+for (const fileName of fs.readdirSync(blogsDir)) {
+  if (!fileName.endsWith(".md")) {
+    continue;
+  }
+
+  const filePath = path.join(blogsDir, fileName);
+  blogModules[filePath] = fs.readFileSync(filePath, "utf8");
+}
 
 /**
  * YAML front matter の抽出に使う正規表現パターン
@@ -80,11 +103,10 @@ const parseFrontMatter = (
 /**
  * 指定されたファイルパスからブログ記事の slug (拡張子を除いたファイル名) を抽出する
  *
- * @param path - 対象ファイルへのパス
+ * @param filePath - 対象ファイルへのパス
  */
-const pathToSlug = (path: string): string => {
-  const fileName = path.split("/").pop() ?? "";
-  return fileName.replace(/\.md$/i, "");
+const pathToSlug = (filePath: string): string => {
+  return path.basename(filePath, ".md");
 };
 
 /**
@@ -92,27 +114,23 @@ const pathToSlug = (path: string): string => {
  *
  * 1. ファイルパスから slug を抽出する
  * 2. フロントマターと本文をパースする
- * 3. Markdown 内部の HTML 属性を React (JSX) 向けから通常の HTML 属性名に正規化する
+ * 3. 本文の Markdown を起動時に一度だけ HTML へ変換する
  *
- * @param path - 対象ファイルへのパス
+ * @param filePath - 対象ファイルへのパス
  * @param rawContent - Markdown ファイルの生データ（フロントマター込み）
  * @returns Blog オブジェクト
  */
-const toBlog = (path: string, rawContent: string): Blog => {
+const toBlog = (filePath: string, rawContent: string): Blog => {
   const { frontMatter, content } = parseFrontMatter(rawContent);
-  const slug = pathToSlug(path);
-  const normalizedContent = content
-    .replaceAll("className=", "class=")
-    .replaceAll("frameBorder=", "frameborder=")
-    .replaceAll("referrerPolicy=", "referrerpolicy=")
-    .replaceAll("allowFullScreen", "allowfullscreen");
+  const slug = pathToSlug(filePath);
+  const html = String(processor.processSync(content));
 
   return {
     slug,
     title: frontMatter.title,
     publishedAt: frontMatter.publishedAt,
     summary: frontMatter.summary,
-    content: normalizedContent,
+    html,
   };
 };
 
@@ -122,7 +140,13 @@ const toBlog = (path: string, rawContent: string): Blog => {
  * - `publishedAt` (公開日) の降順で並び替えられています。
  */
 export const blogs: Blog[] = Object.entries(blogModules)
-  .map(([path, rawContent]) => toBlog(path, rawContent))
+  .map(([filePath, rawContent]) => {
+    try {
+      return toBlog(filePath, rawContent);
+    } catch (error) {
+      throw new Error(`Failed to load blog "${path.basename(filePath)}"`, { cause: error });
+    }
+  })
   .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
 /**
