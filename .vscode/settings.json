@@ -20,7 +20,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "explicit"
   },
-  "cSpell.words": [
-    "voidzero"
-  ]
+  "cSpell.words": ["voidzero"]
 }
