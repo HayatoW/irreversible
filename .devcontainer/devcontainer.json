@@ -1,4 +1,15 @@
 {
   // https://viteplus.dev/guide/docker#devcontainers
-  "image": "ghcr.io/voidzero-dev/vite-plus:latest"
+  "image": "ghcr.io/voidzero-dev/vite-plus:latest",
+  // https://code.visualstudio.com/remote/advancedcontainers/improve-performance#_use-a-targeted-named-volume
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+  ],
+  // $ whoami => vp のため vp ユーザーが node_modules volume にアクセスできるようにする
+  "postCreateCommand": "sudo chown vp node_modules",
+  "customizations": {
+    "vscode": {
+      "extensions": ["streetsidesoftware.code-spell-checker", "VoidZero.vite-plus-extension-pack"]
+    }
+  }
 }
