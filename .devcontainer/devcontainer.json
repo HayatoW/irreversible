@@ -1,0 +1,4 @@
+{
+  // https://viteplus.dev/guide/docker#devcontainers
+  "image": "ghcr.io/voidzero-dev/vite-plus:latest"
+}
