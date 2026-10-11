@@ -1,6 +1,0 @@
-{
-  "name": "${localWorkspaceFolderBasename}",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:24-trixie",
-  "postCreateCommand": "curl -fsSL https://vite.plus | bash",
-  "runArgs": ["--name", "${localWorkspaceFolderBasename}"]
-}
