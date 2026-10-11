@@ -164,9 +164,6 @@ settings:
 
 catalogs:
   default:
-    vite:
-      specifier: npm:@voidzero-dev/vite-plus-core@1.1.0
-      version: 1.1.0
     vite-plus:
       specifier: 1.1.0
       version: 1.1.0
@@ -178,18 +175,6 @@ importers:
 
   .:
     devDependencies:
-      vite-plus:
-        specifier: 'catalog:'
-        version: 1.1.0(@types/node@26.6.5)(@vitest/ui@5.0.3)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.1)
-
-  apps/website:
-    devDependencies:
-      typescript:
-        specifier: ^7.0.2
-        version: 7.0.2
-      vite:
-        specifier: 'catalog:'
-        version: '@voidzero-dev/vite-plus-core@1.1.0(@types/node@26.6.5)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.1)'
       vite-plus:
         specifier: 'catalog:'
         version: 1.1.0(@types/node@26.6.5)(@vitest/ui@5.0.3)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.1)
@@ -2055,6 +2040,7 @@ snapshots:
       '@typescript/typescript-sunos-x64': 7.0.2
       '@typescript/typescript-win32-arm64': 7.0.2
       '@typescript/typescript-win32-x64': 7.0.2
+    optional: true
 
   undici-types@8.9.0:
     optional: true
