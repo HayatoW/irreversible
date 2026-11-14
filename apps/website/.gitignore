@@ -26,3 +26,9 @@ dist-ssr
 # Void Platform
 .void/*
 .void-wrangler.jsonc
+.void
+.wrangler
+.cloudflare
+.env
+.env.*
+*.tsbuildinfo
