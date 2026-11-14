@@ -7,6 +7,9 @@ export default defineConfig({
     rules: { "vite-plus/prefer-vite-plus-imports": "error" },
     options: { typeAware: true, typeCheck: true },
   },
+  staged: {
+    "*": "vp check --fix",
+  },
   run: {
     cache: true,
   },
