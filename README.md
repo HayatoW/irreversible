@@ -1,5 +1,7 @@
 # Irreversible
 
+[![CI](https://github.com/HayatoW/irreversible/actions/workflows/ci.yml/badge.svg)](https://github.com/HayatoW/irreversible/actions/workflows/ci.yml)
+
 HayatoW's portfolio.
 
 ## Development
