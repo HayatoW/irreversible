@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Void Platform
+.void-wrangler.jsonc
+.void
+.wrangler
+.cloudflare
+.env
+.env.*
+*.tsbuildinfo
