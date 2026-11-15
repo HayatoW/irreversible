@@ -21,3 +21,7 @@ peerDependencyRules:
 allowBuilds:
   esbuild: true
   workerd: true
+minimumReleaseAgeExclude:
+  - "@nkzw/fate@2.2.2"
+  - react-fate@2.2.2
+  - void-fate@2.2.2

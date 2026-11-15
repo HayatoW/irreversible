@@ -1,0 +1,44 @@
+packages:
+  - .
+
+allowBuilds:
+  "@swc/core": true
+  better-sqlite3: false
+  esbuild: true
+  sharp: true
+  workerd: true
+
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
+  vite-plus: 1.4.0
+  vitest: 5.0.5
+
+minimumReleaseAgeExclude:
+  - "@voidzero-dev/vite-plus-core"
+  - vite-plus
+  - "@nkzw/fate@2.2.2"
+  - react-fate@2.2.2
+  - void-fate@2.2.2
+
+onlyBuiltDependencies:
+  - "@tailwindcss/oxide"
+  - esbuild
+  - msgpackr-extract
+  - sharp
+  - workerd
+
+overrides:
+  "@cloudflare/workers-types": 5.20261103.1
+  better-auth: 1.7.15
+  drizzle-orm: 0.45.4
+  kysely: 0.28.17
+  vite: "catalog:"
+  vitest: "catalog:"
+
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: "*"
+    vitest: "*"
