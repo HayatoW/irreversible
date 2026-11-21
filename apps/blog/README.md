@@ -71,6 +71,8 @@ Void signs you into Cloudflare when needed, provisions resources, applies the ch
 
 For a CI deployment, scope the Cloudflare API token to the target account and grant Workers Scripts: Edit, D1: Edit, and Workers KV Storage: Edit. Void uses KV to cache the Markdown pages.
 
+The public `blog.irreversible.workers.dev` address uses a thin Worker in `alias/` that forwards requests through a service binding to `irreversible-blog`. Deploy the app with Void as usual. If the alias itself changes, deploy it from `apps/blog` with `vpx wrangler deploy --config alias/wrangler.jsonc`.
+
 After changing the database schema or auth configuration, run `vp run db:generate`, review and commit the migration, then deploy. The template's migrations include the production Better Auth schema.
 
 ## Translations
