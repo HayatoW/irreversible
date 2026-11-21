@@ -14,7 +14,7 @@ on:
 permissions:
   contents: read
 
-concurrency: irreversible-field-desk-deploy
+concurrency: field-desk-deploy
 
 jobs:
   deploy:
