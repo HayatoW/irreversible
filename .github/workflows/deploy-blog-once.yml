@@ -74,12 +74,12 @@ jobs:
           console.log(`Previous blog version (rollback): ${blog}`);
           appendFileSync(process.env.GITHUB_OUTPUT, `account=${config.account_id}\nblog=${blog}\nwebsite=${website}\nold=${old}\n`);
           NODE
-      - name: Deploy only the blog Worker through Void
+      - name: Replace the existing blog forwarder through Void
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ steps.baseline.outputs.account }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_WORKERS_SUBDOMAIN: irreversible
-        run: vp exec void deploy --platform cloudflare
+        run: vp exec void deploy --platform cloudflare --atomic
       - name: Verify the live blog no longer forwards requests
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ steps.baseline.outputs.account }}
