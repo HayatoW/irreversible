@@ -1,0 +1,23 @@
+{
+  "name": "field-desk",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "tsc && vp build",
+    "preview": "vp preview",
+    "deploy": "void deploy --platform cloudflare"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.184.1",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}

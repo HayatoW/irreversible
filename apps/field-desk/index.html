@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Explore a hand-modeled, interactive 3D study of the field desk by teenage engineering."
+    />
+    <meta name="theme-color" content="#f8f7f3" />
+    <link rel="icon" type="image/png" href="/src/assets/mark.png" />
+    <title>Field Desk — Irreversible</title>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="masthead">
+        <a class="wordmark" href="https://github.com/HayatoW/irreversible">
+          <span class="wordmark-icon" aria-hidden="true"></span>
+          Irreversible
+        </a>
+        <a class="reference" href="https://teenage.engineering/products/field-desk">
+          Product reference <span aria-hidden="true">↗</span>
+        </a>
+      </header>
+      <main class="layout">
+        <header class="description">
+          <p class="eyebrow">Product study</p>
+          <h1 id="desk-title">field desk</h1>
+          <p class="designer">Design by teenage engineering</p>
+        </header>
+        <section class="viewer" aria-labelledby="viewer-title">
+          <div class="viewer-head">
+            <h2 id="viewer-title">3D viewer</h2>
+            <span class="status" id="status" role="status" data-state="static">Still image</span>
+          </div>
+          <div class="viewport" id="viewport">
+            <img
+              class="poster"
+              src="/src/assets/field-desk.webp"
+              alt="Three-quarter view of the field desk showing its gray top, exposed plywood edge, and slender aluminum braces."
+              width="1200"
+              height="960"
+              fetchpriority="high"
+            />
+            <canvas
+              id="scene"
+              aria-label="Interactive field desk model"
+              aria-describedby="controls-help"
+              hidden
+            ></canvas>
+            <p class="fallback" id="fallback" hidden>3D is unavailable on this device.</p>
+          </div>
+          <div class="toolbar">
+            <div class="presets" role="group" aria-label="Camera views">
+              <button type="button" data-view="overview" aria-pressed="false" disabled>
+                Overview
+              </button>
+              <button type="button" data-view="rear" aria-pressed="false" disabled>Rear</button>
+              <button type="button" data-view="joint" aria-pressed="false" disabled>
+                Joint detail
+              </button>
+            </div>
+            <div class="camera-controls" role="group" aria-label="Zoom and reset">
+              <button type="button" data-zoom="out" class="zoom" aria-label="Zoom out" disabled>
+                −
+              </button>
+              <button type="button" data-zoom="in" class="zoom" aria-label="Zoom in" disabled>
+                +
+              </button>
+              <button type="button" id="reset" disabled>Reset</button>
+            </div>
+          </div>
+          <p class="controls-help" id="controls-help" hidden>
+            Drag or use arrow keys to rotate. Scroll, pinch, or use + and − to zoom.
+          </p>
+        </section>
+        <dl class="specifications">
+          <div>
+            <dt>Overall dimensions</dt>
+            <dd>1195 × 770 × 750 mm<span class="axes">W × D × H</span></dd>
+          </div>
+          <div>
+            <dt>Frame</dt>
+            <dd>Anodized aluminum</dd>
+          </div>
+          <div>
+            <dt>Top</dt>
+            <dd>Formica-faced birch plywood</dd>
+          </div>
+        </dl>
+      </main>
+    </div>
+  </body>
+</html>

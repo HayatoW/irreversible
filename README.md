@@ -29,3 +29,9 @@ vp run -r build
 ```bash
 vp run dev
 ```
+
+## Field Desk
+
+Run the Three.js product study with `vp run field-desk#dev`. The app has its own
+Cloudflare Worker managed by Void. See the [Field Desk
+README](apps/field-desk/README.md) for the Blender source and deployment details.
