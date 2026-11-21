@@ -1,7 +1,3 @@
-# Using fate
-
-Before working on fate, read only the relevant Markdown docs in `node_modules/react-fate/docs/`. Start with `index.md` to find guides, integrations, and API references. The docs match the installed package version. Online documentation is at [fate.technology](https://fate.technology/).
-
 <!--VITE PLUS START-->
 
 # Using Vite+, the Unified Toolchain for the Web
@@ -16,7 +12,7 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 - [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
 - [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
 
-Run `vp run test:all` to verify changes.
+Run `vp run ready` from the repository root to verify changes.
 
 Run `vp check --fix` to fix formatting and lint errors.
 

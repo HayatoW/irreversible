@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "prepare": "vp config",
-    "ready": "vp run blog#codegen && vp check && vp run -r test && vp run -r build",
+    "ready": "vp run blog#prepare:void && vp check && vp run -r test && vp run -r build",
     "dev": "vp run website#dev",
     "dev:blog": "vp run blog#dev"
   },

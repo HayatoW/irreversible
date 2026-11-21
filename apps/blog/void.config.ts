@@ -1,22 +1,15 @@
 import { defineConfig } from "void/config";
 
 export default defineConfig({
-  auth: {
-    providers: ["email"],
-  },
   cloudflare: {
-    durable_objects: {
-      bindings: [
-        {
-          class_name: "VoidLiveStreamDurableObject",
-          name: "VOID_LIVE",
-        },
-      ],
-    },
     migrations: [
       {
         new_sqlite_classes: ["VoidLiveStreamDurableObject"],
         tag: "live-v1",
+      },
+      {
+        deleted_classes: ["VoidLiveStreamDurableObject"],
+        tag: "remove-playground-v1",
       },
     ],
     name: "irreversible-blog",

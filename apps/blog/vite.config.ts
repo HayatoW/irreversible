@@ -1,32 +1,11 @@
 import nkzw from "@nkzw/oxlint-config";
-import fbtee from "@nkzw/vite-plugin-fbtee";
 import tailwindcss from "@tailwindcss/vite";
-import react from "@vitejs/plugin-react";
 import { voidMarkdown } from "@void/md/plugin";
 import { voidReact } from "@void/react/plugin";
-import { fate } from "react-fate/vite";
 import { defineConfig, lazyPlugins } from "vite-plus";
 import { voidPlugin } from "void";
 
-const isTest = process.env.NODE_ENV === "test" || process.env.VITEST;
-
 export default defineConfig({
-  optimizeDeps: {
-    exclude: ["@nkzw/fate/client", "react-fate/client", "void-fate/react"],
-  },
-  environments: {
-    void_worker: {
-      optimizeDeps: {
-        exclude: [
-          "@nkzw/fate/client",
-          "@nkzw/fate/server",
-          "react-fate/client",
-          "void-fate/react",
-          "void-fate/server",
-        ],
-      },
-    },
-  },
   fmt: {
     experimentalSortImports: {
       newlinesBetween: false,
@@ -39,7 +18,6 @@ export default defineConfig({
     },
     ignorePatterns: [
       "**/.cloudflare/**",
-      ".fate/",
       ".void/",
       ".void-wrangler.jsonc",
       "dist/",
@@ -52,7 +30,6 @@ export default defineConfig({
     extends: [nkzw],
     ignorePatterns: [
       "**/.cloudflare/**",
-      ".fate",
       ".void",
       ".void-wrangler.jsonc",
       "dist",
@@ -60,33 +37,9 @@ export default defineConfig({
       "vite.config.ts.timestamp-*",
     ],
     options: { typeAware: true, typeCheck: true },
-    overrides: [
-      {
-        files: ["db/seed.ts", "src/fate/__tests__/**"],
-        rules: {
-          "no-console": "off",
-        },
-      },
-    ],
-    rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-    },
   },
-  plugins: lazyPlugins(() => [
-    ...(lazyPlugins(() => [
-      fbtee(),
-      tailwindcss(),
-      ...(isTest
-        ? [react({ compiler: true })]
-        : [voidPlugin(), voidReact({ react: { compiler: true } }), voidMarkdown()]),
-    ]) ?? []),
-    fate({
-      module: "./src/fate/server.ts",
-      transport: "void",
-    }),
-  ]),
+  plugins: lazyPlugins(() => [tailwindcss(), voidPlugin(), voidReact(), voidMarkdown()]),
   server: { port: 6001 },
-  ssr: { noExternal: ["void-fate"] },
   staged: {
     "*": "vp check --fix",
   },
