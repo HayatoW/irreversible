@@ -6,6 +6,7 @@ export default defineAuth(({ defaults }) => ({
   emailAndPassword: {
     ...defaults.emailAndPassword,
     autoSignIn: true,
+    disableSignUp: true,
     enabled: true,
     maxPasswordLength: 128,
     minPasswordLength: 8,

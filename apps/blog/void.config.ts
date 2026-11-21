@@ -19,6 +19,8 @@ export default defineConfig({
         tag: "live-v1",
       },
     ],
+    name: "irreversible-blog",
+    workers_dev: true,
   },
   head: {
     htmlAttrs: {

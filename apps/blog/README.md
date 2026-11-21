@@ -58,9 +58,9 @@ Common commands from `apps/blog`:
 
 The root production workflow still deploys `apps/website` only. It does not publish these routes or cut over the portfolio domain.
 
-Fresh databases have no playground accounts, and the app has no registration screen. Decide how accounts should be provisioned before exposing the playground in production.
+Fresh databases have no playground accounts, and public registration is disabled on the server. Choose how to provision accounts before opening the playground to users.
 
-To deploy the blog separately, generate the app files and deploy from `apps/blog`:
+To publish the blog to the separate `irreversible-blog` Worker on `workers.dev`, generate the app files and deploy from `apps/blog`:
 
 ```sh
 vp run codegen
