@@ -1,34 +1,34 @@
-# Irreversible Blog
+# Irreversible ブログ
 
-The blog uses the Void pages router with React. The post list is at `/posts`. Articles are Markdown files in `pages/posts/`; their filenames determine their public URLs.
+ブログは Void のページルーターと React で実装しています。投稿一覧は `/posts` です。投稿は `pages/posts/` に Markdown で置き、ファイル名が公開 URL の末尾になります。
 
-## Local Development
+## ローカル開発
 
-Use Node.js 24.22+ on the 24.x line or Node.js 26.12+, and [Vite+](https://viteplus.dev/guide/). From the repository root:
+Node.js 24.22 以降の 24.x 系、または Node.js 26.12 以降と、[Vite+](https://viteplus.dev/guide/) を使います。リポジトリのルートで実行してください。
 
 ```sh
 vp install --frozen-lockfile
 vp run dev:blog
 ```
 
-Open `http://localhost:6001`. Run `vp run ready` from the repository root to generate Void types, check the workspace, and run tests and builds.
+`http://localhost:6001` を開きます。ルートで `vp run ready` を実行すると、Void の型生成、ワークスペースのチェック、テスト、ビルドが走ります。
 
-## Cloudflare Deployment
+## Cloudflare へのデプロイ
 
-The root production workflow deploys only `apps/website`. To publish the blog to its separate `irreversible-blog` Worker, run from `apps/blog`:
+リポジトリの本番ワークフローは `apps/website` だけをデプロイします。ブログは別の Worker（`irreversible-blog`）に公開します。`apps/blog` で次を実行してください。
 
 ```sh
 vp exec void deploy --platform cloudflare
 ```
 
-For CI, scope the Cloudflare API token to the account in `void.lock.json` and grant Workers Scripts: Edit and Workers KV Storage: Edit. The blog uses KV to cache Markdown pages; it does not use D1.
+CI で使う Cloudflare API トークンは `void.lock.json` のアカウントに限定し、Workers Scripts: Edit と Workers KV Storage: Edit を付与してください。Markdown ページのキャッシュには KV を使います。D1 は使いません。
 
-Retiring the playground's live-update Durable Object requires an atomic deployment. If Void still reports pending Durable Object migrations on a later deploy, review the listed tags and retry with:
+プレイグラウンドのライブ更新用 Durable Object を廃止するには、アトミックデプロイが必要です。以降のデプロイで Void が未適用の Durable Object マイグレーションを報告する場合も、表示されたタグを確認して次のコマンドで再実行してください。
 
 ```sh
 vp exec void deploy --platform cloudflare --atomic
 ```
 
-Cloudflare switches traffic before Void checks readiness in this mode. If the command fails after publishing, check the deployed version and test the public URL before retrying. The old D1 database is detached, not deleted.
+このモードでは、Void が準備完了を確認する前に Cloudflare がトラフィックを切り替えます。公開後にコマンドが失敗した場合は、再実行の前にデプロイ済みのバージョンと公開 URL の応答を確認してください。旧 D1 データベースは Worker から切り離しただけで、削除していません。
 
-The public `blog.irreversible.workers.dev` address uses a separate Worker in `alias/` that forwards requests to `irreversible-blog`. Deploy the alias only if its configuration changes: `vpx wrangler deploy --config alias/wrangler.jsonc`.
+公開 URL の `blog.irreversible.workers.dev` は、`alias/` の別 Worker を経由して `irreversible-blog` にリクエストを転送します。エイリアスは設定を変更した場合のみデプロイします: `vpx wrangler deploy --config alias/wrangler.jsonc`。

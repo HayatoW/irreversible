@@ -3,7 +3,7 @@ title: "Last Train Home"
 publishedAt: "2026-01-01"
 description: "転職とこれまでの振り返り"
 lang: ja
-layout: "!article"
+layout: "!post"
 ---
 
 2026年1月から新しい職場で働く。事業を自分事として捉えることができ、採用している技術にも納得している。

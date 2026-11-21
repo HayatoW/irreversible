@@ -3,7 +3,7 @@ title: "Neon"
 publishedAt: "2026-02-26"
 description: "Porsche 911 は素晴らしい"
 lang: ja
-layout: "!article"
+layout: "!post"
 ---
 
 緑の中を走り抜けてく真紅なポルシェ

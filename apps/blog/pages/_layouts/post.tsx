@@ -3,7 +3,7 @@ import { useFrontmatter } from "@void/md";
 import type { ReactNode } from "react";
 import PortfolioLayout from "./portfolio.tsx";
 
-export default function ArticleLayout({ children }: { children: ReactNode }) {
+export default function PostLayout({ children }: { children: ReactNode }) {
   const { description, lang, publishedAt, title } = useFrontmatter();
 
   return (
