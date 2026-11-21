@@ -32,6 +32,6 @@ vp run dev
 
 ## Field Desk
 
-Run the Three.js product study with `vp run field-desk#dev`. The app has its own
-Cloudflare Worker managed by Void. See the [Field Desk
-README](apps/field-desk/README.md) for the Blender source and deployment details.
+`vp run field-desk#dev` で Three.js の 3D ビューアを起動できます。
+公開先は Void で管理する専用の Cloudflare Worker です。Blender でのモデル再生成と
+デプロイの手順は [Field Desk の README](apps/field-desk/README.md) を参照してください。

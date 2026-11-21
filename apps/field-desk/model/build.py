@@ -1,7 +1,7 @@
-"""Generate the Field Desk GLB and (with --poster) its WebP placeholder.
+"""Field Desk の GLB を生成する。--poster 指定時は静止画の WebP も生成する。
 
-Authoring coordinates are millimeters, with +Y toward the back and +Z up.
-Dimensions without a published value are estimated from the product photos.
+座標の単位はミリメートルで、+Y が背面方向、+Z が上向き。
+公開されていない寸法は製品写真から推定している。
 """
 
 import argparse
@@ -104,7 +104,7 @@ def place_mesh(obj, location, axis=None):
 
 
 def profile20():
-    """Four recessed faces with rounded ribs at the corners."""
+    """四面に溝があり、角に丸みを帯びたリブがある断面。"""
     side = [(-9.4, 10), (-7.8, 10), (-7.45, 9.7), (-6.8, 8.5),
             (6.8, 8.5), (7.45, 9.7), (7.8, 10), (9.4, 10), (9.85, 9.85)]
     points = []
@@ -124,7 +124,7 @@ def drill(obj, positions, axis, radius, shoulder):
     sections = 20
     for hole in positions:
         start = len(points)
-        # A flared cutter leaves a real bevel at each mouth of the bore.
+        # 両端が広がる形状でくり抜き、貫通穴の両側の開口部に面取りを作る。
         for r, z in [(radius + 0.28, -12), (radius + 0.28, -shoulder),
                      (radius, -shoulder + 0.28), (radius, shoulder - 0.28),
                      (radius + 0.28, shoulder), (radius + 0.28, 12)]:
@@ -154,7 +154,7 @@ def rail_mesh(kind, length, surface):
         bore_radius = 1.9
     count = len(outline)
     lo, hi = -length / 2, length / 2
-    # Align the inner ring to the exterior perimeter so the ends have a clean cut.
+    # 内周の頂点を外周の各頂点と同じ角度に揃え、端面を形作る。
     bore = [(bore_radius * x / math.hypot(x, y), bore_radius * y / math.hypot(x, y))
             for x, y in outline]
     points = ([(x, y, z) for profile in [outline, bore] for z in [lo, hi] for x, y in profile])
@@ -191,7 +191,7 @@ def rail(kind, label, start, end, surface, bore_direction=None):
 
 @lru_cache
 def socket_mesh(radius, surface, recess):
-    """Socket screw head with chamfered rim and a recessed six-sided drive."""
+    """外周を面取りし、六角穴を設けたネジ頭。"""
     count = 24
     points = []
     for r, z in [(radius * 0.67, -1.4), (radius, -0.4), (radius, 0),
@@ -200,7 +200,7 @@ def socket_mesh(radius, surface, recess):
         for index in range(count):
             a = math.tau * index / count
             if len(points) >= 4 * count:
-                # Intersect the radial ray with that side of the hexagon.
+                # 中心から伸びる半直線と六角形の辺が交わる位置を求める。
                 hex_angle = (a % (math.tau / 6)) - math.pi / 6
                 dist = r * math.cos(math.pi / 6) / math.cos(hex_angle)
             else:
@@ -225,7 +225,7 @@ def screw(at, axis, radius, surfaces):
 
 
 def clamp(name, start, end, outward, width, surfaces):
-    """A rounded clamp plate around the rail end with a socket at its tip."""
+    """レールの端を覆う丸みのあるクランプ板。先端に六角穴付きネジを配置する。"""
     start, end, outward = Vector(start), Vector(end), Vector(outward)
     travel = (end - start).normalized()
     across = outward.cross(travel)
@@ -252,7 +252,7 @@ def clamp(name, start, end, outward, width, surfaces):
 
 
 def plywood():
-    """Bake longitudinal birch grain and glue lines for the exposed wood edge."""
+    """木口に見える樺の木目と接着層をテクスチャに描く。"""
     width, height = 512, 128
     rng = random.Random(77)
     pixels = []
@@ -279,7 +279,7 @@ def plywood():
 
 def tabletop(laminate):
     edge = plywood()
-    # The two laminate faces wrap just over the small chamfers at the edge.
+    # 上下面の化粧板は外周の小さな面取りまで回り込む。
     points, faces = [], []
     levels = [(731, 0.45), (731.55, 0), (732.15, 0), (748.85, 0),
               (749.45, 0), (750, 0.45)]

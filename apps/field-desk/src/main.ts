@@ -1,4 +1,3 @@
-import "@fontsource-variable/geist";
 import "./style.css";
 import {
   ACESFilmicToneMapping,
@@ -173,7 +172,7 @@ async function start() {
       const height = viewport.clientHeight;
       if (!width || !height) return;
       camera.aspect = width / height;
-      // Match the 5:4 poster's framing when the viewport is narrower than it.
+      // 表示領域が静止画（5:4）より縦長なら、静止画と同じ横方向の画角を保つ。
       const fit = Math.min(1, camera.aspect / 1.25);
       camera.fov = MathUtils.radToDeg(2 * Math.atan(Math.tan(MathUtils.degToRad(16)) / fit));
       camera.updateProjectionMatrix();
@@ -183,7 +182,7 @@ async function start() {
 
     function setView(name: View) {
       const preset = presets[name];
-      // Clear any remaining drag inertia before jumping to a new camera position.
+      // カメラを移動する前に、ドラッグ操作による慣性をリセットする。
       orbit.enableDamping = false;
       orbit.update();
       camera.position.fromArray(preset.position);
