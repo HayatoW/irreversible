@@ -69,7 +69,7 @@ vp exec void deploy --platform cloudflare
 
 Void signs you into Cloudflare when needed, provisions resources, applies the checked-in database migrations, and deploys the app. Commit the resource IDs saved in `void.lock.json` for subsequent deployments. Keep the template's `VOID_LIVE` Durable Object binding and class migration in `void.config.ts` for live updates.
 
-For a CI deployment, scope the Cloudflare API token to the target account and grant Workers Scripts: Edit, D1: Edit, and Workers KV Storage: Edit. Void uses KV to cache the Markdown pages.
+For a CI deployment, scope the Cloudflare API token to the account recorded in `void.lock.json` and grant Workers Scripts: Edit, D1: Edit, and Workers KV Storage: Edit. Void uses KV to cache the Markdown pages.
 
 The public `blog.irreversible.workers.dev` address uses a thin Worker in `alias/` that forwards requests through a service binding to `irreversible-blog`. Deploy the app with Void as usual. If the alias itself changes, deploy it from `apps/blog` with `vpx wrangler deploy --config alias/wrangler.jsonc`.
 
