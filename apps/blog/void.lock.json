@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "source": {
+    "durable_objects": {
+      "bindings": [
+        {
+          "class_name": "VoidLiveStreamDurableObject",
+          "name": "VOID_LIVE"
+        }
+      ]
+    },
+    "migrations": [
+      {
+        "new_sqlite_classes": ["VoidLiveStreamDurableObject"],
+        "tag": "live-v1"
+      }
+    ],
+    "name": "irreversible-blog",
+    "workers_dev": true
+  },
+  "resolved": {
+    "durable_objects": {
+      "bindings": [
+        {
+          "class_name": "VoidLiveStreamDurableObject",
+          "name": "VOID_LIVE"
+        }
+      ]
+    },
+    "migrations": [
+      {
+        "new_sqlite_classes": ["VoidLiveStreamDurableObject"],
+        "tag": "live-v1"
+      }
+    ],
+    "name": "irreversible-blog",
+    "workers_dev": true,
+    "account_id": "1c5b61e0bfd3a45c3b3c10207fb6136d",
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "irreversible-blog-db",
+        "database_id": "d60dfb64-7a56-4198-9974-b2bc8e722116",
+        "migrations_dir": "./db/migrations"
+      }
+    ]
+  },
+  "text": "{\n  \"durable_objects\": {\n    \"bindings\": [\n      {\n        \"class_name\": \"VoidLiveStreamDurableObject\",\n        \"name\": \"VOID_LIVE\"\n      }\n    ]\n  },\n  \"migrations\": [\n    {\n      \"new_sqlite_classes\": [\n        \"VoidLiveStreamDurableObject\"\n      ],\n      \"tag\": \"live-v1\"\n    }\n  ],\n  \"name\": \"irreversible-blog\",\n  \"workers_dev\": true,\n  \"account_id\": \"1c5b61e0bfd3a45c3b3c10207fb6136d\",\n  \"d1_databases\": [\n    {\n      \"binding\": \"DB\",\n      \"database_name\": \"irreversible-blog-db\",\n      \"database_id\": \"d60dfb64-7a56-4198-9974-b2bc8e722116\",\n      \"migrations_dir\": \"./db/migrations\"\n    }\n  ]\n}\n"
+}
