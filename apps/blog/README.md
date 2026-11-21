@@ -23,12 +23,12 @@ vp exec void deploy --platform cloudflare
 
 For CI, scope the Cloudflare API token to the account in `void.lock.json` and grant Workers Scripts: Edit and Workers KV Storage: Edit. The blog uses KV to cache Markdown pages; it does not use D1.
 
-If the target Worker still has the playground's live-update Durable Object, retire it with an atomic deployment:
+Retiring the playground's live-update Durable Object requires an atomic deployment. If Void still reports pending Durable Object migrations on a later deploy, review the listed tags and retry with:
 
 ```sh
 vp exec void deploy --platform cloudflare --atomic
 ```
 
-Cloudflare switches traffic before Void checks readiness in this mode. After the migration, use the standard deploy command for regular updates. The old D1 database is detached, not deleted.
+Cloudflare switches traffic before Void checks readiness in this mode. If the command fails after publishing, check the deployed version and test the public URL before retrying. The old D1 database is detached, not deleted.
 
 The public `blog.irreversible.workers.dev` address uses a separate Worker in `alias/` that forwards requests to `irreversible-blog`. Deploy the alias only if its configuration changes: `vpx wrangler deploy --config alias/wrangler.jsonc`.
