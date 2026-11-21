@@ -1,0 +1,362 @@
+:root {
+  font-family: "Geist Variable", system-ui, sans-serif;
+  color: #232522;
+  background: #f8f7f3;
+  font-synthesis: none;
+  --line: #d8d7cf;
+  --muted: #5a5d55;
+  --accent: #a04d27;
+  --mono: ui-monospace, "SF Mono", Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  max-inline-size: 1560px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3.7vw, 64px);
+}
+
+.masthead {
+  min-block-size: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.masthead a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-block-size: 44px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.wordmark {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.055em;
+}
+
+.wordmark-icon {
+  inline-size: 15px;
+  block-size: 15px;
+  background: linear-gradient(135deg, var(--accent) 46%, transparent 47%) 0 0 / 100% 100%;
+  border: 1px solid var(--accent);
+}
+
+.masthead .reference {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.reference span {
+  font-size: 16px;
+}
+
+.masthead a:hover {
+  color: var(--accent);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(225px, 0.31fr) minmax(0, 1fr);
+  grid-template-areas: "title viewer" "specifications viewer";
+  grid-template-rows: auto 1fr;
+  gap: clamp(30px, 7vh, 76px) clamp(24px, 3.6vw, 62px);
+  padding-block: clamp(26px, 5.6vh, 64px) 32px;
+}
+
+.description {
+  grid-area: title;
+  min-inline-size: 0;
+  padding-block-start: clamp(10px, 5.4vh, 60px);
+}
+
+.eyebrow,
+.specifications dt,
+.viewer-head h2,
+.status,
+.axes {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.073em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  margin: 0 0 20px;
+  color: var(--accent);
+}
+
+h1 {
+  max-inline-size: 4ch;
+  margin: 0;
+  font-size: clamp(70px, 7.2vw, 120px);
+  font-weight: 540;
+  line-height: 0.85;
+  letter-spacing: -0.087em;
+}
+
+.designer {
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.specifications {
+  grid-area: specifications;
+  margin: 0;
+}
+
+.specifications div {
+  border-top: 1px solid var(--line);
+  padding-block: 13px 15px;
+}
+
+.specifications dt {
+  margin-block-end: 5px;
+  color: var(--muted);
+}
+
+.specifications dd {
+  margin: 0;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.axes {
+  display: block;
+  margin-block-start: 5px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.viewer {
+  grid-area: viewer;
+  min-inline-size: 0;
+  container-type: inline-size;
+}
+
+.viewer-head,
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 14px;
+  flex-wrap: wrap;
+  padding-inline: clamp(10px, 2.4cqi, 20px);
+  border: 1px solid var(--line);
+  background: #fbfaf7;
+}
+
+.viewer-head {
+  min-block-size: 49px;
+  border-bottom: 0;
+}
+
+.viewer-head h2 {
+  margin: 0;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+}
+
+.status::before {
+  content: "";
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status[data-state="ready"] {
+  color: #38634c;
+}
+
+.status[data-state="loading"] {
+  color: var(--accent);
+}
+
+.viewport {
+  position: relative;
+  min-inline-size: 0;
+  block-size: clamp(450px, 59vh, 660px);
+  isolation: isolate;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at center, #64685e35 0.6px, transparent 0.85px) center / 17px 17px,
+    radial-gradient(ellipse at 48% 35%, #f0f0eb 0%, #e6e7e1 65%, #dedfd8 100%);
+}
+
+.poster,
+#scene {
+  display: block;
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.poster {
+  object-fit: contain;
+}
+
+#scene {
+  cursor: grab;
+  touch-action: none;
+}
+
+#scene:active {
+  cursor: grabbing;
+}
+
+#scene:focus-visible {
+  outline-offset: -3px;
+}
+
+.fallback {
+  position: absolute;
+  margin: 0;
+  inset: auto 12px 12px;
+  justify-self: center;
+  padding: 8px 11px;
+  color: var(--muted);
+  background: #fbfaf7;
+  font-size: 12px;
+}
+
+.toolbar {
+  min-block-size: 62px;
+  padding-block: 6px;
+  border-top: 0;
+}
+
+.toolbar > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+button {
+  min-inline-size: 38px;
+  min-block-size: 38px;
+  padding: 5px 11px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: inherit;
+  background: transparent;
+  font:
+    520 13px/1.15 "Geist Variable",
+    system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+
+@media (pointer: coarse) {
+  button {
+    min-inline-size: 44px;
+    min-block-size: 44px;
+  }
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+button:hover:not(:disabled) {
+  background: #efeee8;
+}
+
+.presets button[aria-pressed="true"] {
+  border-color: #e4c8b7;
+  color: #843f1f;
+  background: #f5e9e0;
+}
+
+.camera-controls button {
+  border-color: var(--line);
+}
+
+.camera-controls .zoom {
+  padding-inline: 5px;
+  font-size: 19px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.controls-help {
+  margin: 11px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+@container (max-width: 410px) {
+  .toolbar > div {
+    gap: 2px;
+  }
+
+  button {
+    padding-inline: 8px;
+  }
+}
+
+@media (max-width: 800px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title" "viewer" "specifications";
+    grid-template-rows: auto;
+    gap: 20px;
+  }
+
+  .description {
+    padding-block-start: 20px;
+  }
+
+  .eyebrow {
+    margin-block-end: 16px;
+  }
+
+  h1 {
+    max-inline-size: none;
+    font-size: clamp(54px, 12vw, 86px);
+    letter-spacing: -0.075em;
+  }
+
+  .designer {
+    margin-block: 16px 4px;
+  }
+
+  .specifications {
+    margin: 8px 0 0;
+  }
+
+  .viewport {
+    block-size: clamp(286px, 83vi, 500px);
+  }
+}
