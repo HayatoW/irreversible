@@ -2,6 +2,7 @@ import nkzw from "@nkzw/oxlint-config";
 import fbtee from "@nkzw/vite-plugin-fbtee";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import { voidMarkdown } from "@void/md/plugin";
 import { voidReact } from "@void/react/plugin";
 import { fate } from "react-fate/vite";
 import { defineConfig, lazyPlugins } from "vite-plus";
@@ -77,7 +78,7 @@ export default defineConfig({
       tailwindcss(),
       ...(isTest
         ? [react({ compiler: true })]
-        : [voidPlugin(), voidReact({ react: { compiler: true } })]),
+        : [voidPlugin(), voidReact({ react: { compiler: true } }), voidMarkdown()]),
     ]) ?? []),
     fate({
       module: "./src/fate/server.ts",

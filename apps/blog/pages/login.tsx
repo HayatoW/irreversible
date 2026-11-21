@@ -1,7 +1,6 @@
 import Stack, { VStack } from "@nkzw/stack";
 import { useRouter, useShared } from "@void/react";
 import { fbs } from "fbtee";
-import { ExternalLinkIcon } from "lucide-react";
 import { useActionState, useEffect, useState } from "react";
 import type { SharedData } from "../src/lib/shared.ts";
 import { AsyncButton } from "../src/ui/Button.tsx";
@@ -28,7 +27,7 @@ export default function LoginPage() {
         onRequest: () => {},
         onSuccess: () => {
           router.flushAll();
-          void router.visit("/", { replace: true });
+          void router.visit("/playground", { replace: true });
         },
       },
     );
@@ -39,7 +38,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (auth.user) {
       router.flushAll();
-      void router.visit("/", { replace: true });
+      void router.visit("/playground", { replace: true });
     }
   }, [auth.user, router]);
 
@@ -80,25 +79,6 @@ export default function LoginPage() {
                 </div>
               </VStack>
             </Stack>
-          </Card>
-          <Card className="w-84">
-            <p>
-              <fbt desc="Example account instructions">
-                Try one of the{" "}
-                <Stack
-                  alignCenter
-                  as="a"
-                  className="inline-flex! px-1 underline hover:no-underline"
-                  gap={4}
-                  href="https://github.com/nkzw-tech/fate/blob/main/packages/create-fate/templates/fate/void/seedData.ts#L1"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Example Accounts <ExternalLinkIcon className="h-4 w-4" />
-                </Stack>{" "}
-                in the seed data.
-              </fbt>{" "}
-            </p>
           </Card>
         </Stack>
       </VStack>

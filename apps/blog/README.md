@@ -1,12 +1,8 @@
-# _fate_ Void Template
+# Irreversible Blog
 
-Create a new fate app with Vite+:
+The blog uses the Void pages router with React. The Fate playground uses Drizzle, `void-fate`, `react-fate`, and Better Auth.
 
-```bash
-vp create fate -- --template void
-```
-
-This template uses the Void pages router with Drizzle, `void-fate`, `react-fate`, Better Auth, Tailwind, and React Compiler.
+Public articles are Markdown files in `pages/blog/`. Their filenames are their URL slugs, so renaming a file changes its public URL. The playground lives at `/playground`.
 
 ## Folder Structure
 
@@ -19,46 +15,51 @@ This template uses the Void pages router with Drizzle, `void-fate`, `react-fate`
 
 You'll need Node.js 24.22+ on the 24.x line or Node.js 26.12+, and [Vite+](https://viteplus.dev/guide/).
 
-Install dependencies:
+Install dependencies from the monorepo root:
 
 ```bash
-vp install
+vp install --frozen-lockfile
 ```
 
-Set up Void local files, seed the local database, and prepare fate client support:
+Generate Void, Fate, and translation files from the monorepo root. This does not touch the database:
 
 ```bash
-vp run dev:setup
+vp run blog#codegen
 ```
 
 Start the app:
 
 ```bash
-vp run dev
+vp run dev:blog
 ```
 
-The app runs at `http://localhost:6001`. fate RPC requests go to `/fate`; live updates use the SSE route at `/fate-live`.
+The app runs at `http://localhost:6001`. Fate RPC requests go to `/fate`; live updates use the SSE route at `/fate-live`.
+
+To populate a **disposable local database** for the playground, explicitly run `vp run blog#db:seed`. The command resets the local database, deleting any posts or comments already in it. Production migrations create only schema, not demo records.
 
 ## Development
 
-Common commands from the project root:
+Common commands from `apps/blog`:
 
 - `vp run dev` starts the Void app.
-- `vp run dev:setup` prepares Void, seeds the local database, and prepares fate client support.
+- `vp run codegen` prepares Void, Fate, and translation artifacts without seeding.
 - `vp run prepare:void` regenerates Void local files.
 - `vp run fate:generate` refreshes fate client support after changing `src/fate/server.ts` or views.
 - `vp run db:generate` generates Drizzle migration files from `db/schema.ts`.
 - `vp run db:migrate` applies database migrations.
-- `vp run db:seed` seeds the local database.
+- `vp run db:seed` resets and seeds the local database.
 - `vp check --fix` formats, lints, and type-checks the workspace.
-- `vp test` runs the test suite.
+- `vp run test` runs the test suite.
 - `vp run build` builds the app.
 
 ## Cloudflare Deployment
 
-Deploy directly to your own Cloudflare account:
+The root production workflow still deploys `apps/website` only. It does not publish these routes or cut over the portfolio domain.
+
+To deploy the blog separately, generate the app files and deploy from `apps/blog`:
 
 ```sh
+vp run codegen
 vp exec void deploy --platform cloudflare
 ```
 

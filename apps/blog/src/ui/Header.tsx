@@ -21,15 +21,10 @@ export default function Header() {
         className="max-w-8xl relative container mx-auto h-16 px-6 lg:px-8"
         gap={16}
       >
-        <Link
-          href="/"
-          onClick={() =>
-            pathname !== "/" && history.state?.idx > 0 ? history.back() : router.visit("/")
-          }
-        >
+        <Link href="/playground">
           <Stack alignCenter gap={12}>
             <div className="squircle relative flex h-10 w-10 items-center justify-center bg-linear-to-br from-gray-100 to-gray-200 text-white shadow-lg shadow-gray-500/20 transition duration-250 hover:scale-110 active:scale-90">
-              {pathname === "/" ? (
+              {pathname === "/playground" ? (
                 <svg
                   className="h-6 w-6 text-gray-500"
                   preserveAspectRatio="xMidYMax"
@@ -58,6 +53,9 @@ export default function Header() {
           </Stack>
         </Link>
         <Stack alignCenter>
+          <a className="text-sm font-medium hover:underline" href="/blog">
+            Blog
+          </a>
           <LocaleSwitcher />
           <Button asChild size="sm" variant="ghost">
             <Link href="/search">

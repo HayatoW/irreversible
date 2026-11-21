@@ -29,8 +29,7 @@ export default defineConfig({
       { charset: "utf8" },
       { content: "width=device-width, initial-scale=1", name: "viewport" },
     ],
-    title: "fate",
-    titleTemplate: "%s | fate",
+    title: "Irreversible",
   },
   routing: { typedRoutes: true },
   worker: {
