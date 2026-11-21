@@ -1,0 +1,39 @@
+{
+  "name": "blog",
+  "version": "0.0.1",
+  "private": true,
+  "description": "The Irreversible blog.",
+  "type": "module",
+  "scripts": {
+    "build": "vp build",
+    "dev": "vp dev",
+    "prepare:void": "void prepare"
+  },
+  "dependencies": {
+    "@void/md": "catalog:",
+    "@void/react": "^1.7.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "void": "^1.7.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261113.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "engines": {
+    "node": "^24.22.0 || >=26.12.0",
+    "pnpm": ">=11.0.0"
+  }
+}
