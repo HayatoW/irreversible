@@ -37,6 +37,8 @@ The app runs at `http://localhost:6001`. Fate RPC requests go to `/fate`; live u
 
 To populate a **disposable local database** for the playground, explicitly run `vp run blog#db:seed`. The command resets the local database, deleting any posts or comments already in it. Production migrations create only schema, not demo records.
 
+If you already ran the previous demo migration in a local database, you can keep using it without resetting. Its existing data is unchanged.
+
 ## Development
 
 Common commands from `apps/blog`:
@@ -55,6 +57,8 @@ Common commands from `apps/blog`:
 ## Cloudflare Deployment
 
 The root production workflow still deploys `apps/website` only. It does not publish these routes or cut over the portfolio domain.
+
+Fresh databases have no playground accounts, and the app has no registration screen. Decide how accounts should be provisioned before exposing the playground in production.
 
 To deploy the blog separately, generate the app files and deploy from `apps/blog`:
 

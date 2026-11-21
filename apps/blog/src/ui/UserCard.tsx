@@ -55,20 +55,26 @@ const UserNameForm = ({ user }: { user: SessionUser }) => {
 
     try {
       setError(null);
-      await fate.mutations.user.update({
+      const result = await fate.mutations.user.update({
         input: { name: newName },
         optimistic: {
           id,
-          username: newName,
+          name: newName,
         },
         view: UserView,
       });
-      await AuthClient.updateUser({ name });
+      if (result.error) {
+        throw result.error;
+      }
+      const { error } = await AuthClient.updateUser({ name: newName });
+      if (error) {
+        setError(fbs("Failed to update user name.", "User name update error"));
+      }
     } catch (error) {
       setError(
         (error instanceof Error &&
           error.message &&
-          safeParse<Array<{ message: string }>>(error.message)?.[0]?.message) ||
+          (safeParse<Array<{ message: string }>>(error.message)?.[0]?.message || error.message)) ||
           fbs("Failed to update user name.", "User name update error"),
       );
     }

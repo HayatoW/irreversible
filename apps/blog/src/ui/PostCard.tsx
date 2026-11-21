@@ -110,24 +110,28 @@ const CommentInput = ({
       return;
     }
 
-    const result = await fate.mutations.comment.add({
-      input: { content, postId: post.id },
-      insert: { into: post.comments, position: "after" },
-      optimistic: {
-        author: user ? { id: user.id, name: user.name } : null,
-        content,
-        id: `optimistic:${Date.now().toString(36)}`,
-        post: { commentCount: post.commentCount + 1, id: post.id },
-      },
-      view: view<InlineComment>()({
-        ...CommentView,
-        post: { commentCount: true },
-      }),
-    });
-
-    setCommentText("");
-
-    return result;
+    try {
+      const result = await fate.mutations.comment.add({
+        input: { content, postId: post.id },
+        insert: { into: post.comments, position: "after" },
+        optimistic: {
+          author: user ? { id: user.id, name: user.name } : null,
+          content,
+          id: `optimistic:${Date.now().toString(36)}`,
+          post: { commentCount: post.commentCount + 1, id: post.id },
+        },
+        view: view<InlineComment>()({
+          ...CommentView,
+          post: { commentCount: true },
+        }),
+      });
+      if (!result.error) {
+        setCommentText("");
+      }
+      return result;
+    } catch (error) {
+      return { error };
+    }
   }, null);
 
   const maybeSubmitComment = (event: KeyboardEvent<HTMLTextAreaElement>) => {

@@ -16,24 +16,20 @@ export default function LoginPage() {
   const router = useRouter();
   const { auth } = useShared<SharedData>();
 
-  const [, signInAction] = useActionState(async () => {
-    await AuthClient.signIn.email(
-      {
-        email,
-        password,
-      },
-      {
-        onError: () => {},
-        onRequest: () => {},
-        onSuccess: () => {
-          router.flushAll();
-          void router.visit("/playground", { replace: true });
-        },
-      },
-    );
+  const [signInFailed, signInAction, isSigningIn] = useActionState(async () => {
+    try {
+      const { error } = await AuthClient.signIn.email({ email, password });
+      if (error) {
+        return true;
+      }
+    } catch {
+      return true;
+    }
 
-    return null;
-  }, null);
+    router.flushAll();
+    void router.visit("/playground", { replace: true });
+    return false;
+  }, false);
 
   useEffect(() => {
     if (auth.user) {
@@ -56,19 +52,31 @@ export default function LoginPage() {
           <Card className="w-84">
             <Stack gap vertical>
               <VStack action={signInAction} as="form" gap={12}>
+                <label className="sr-only" htmlFor="login-email">
+                  <fbt desc="Sign in email label">Email</fbt>
+                </label>
                 <Input
+                  autoComplete="username"
                   className="w-48"
+                  id="login-email"
                   name="email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={fbs("email", "login: placeholder")}
+                  required
                   type="email"
                   value={email}
                 />
+                <label className="sr-only" htmlFor="login-password">
+                  <fbt desc="Sign in password label">Password</fbt>
+                </label>
                 <Input
+                  autoComplete="current-password"
                   className="w-48"
+                  id="login-password"
                   name="password"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={fbs("password", "login: placeholder")}
+                  required
                   type="password"
                   value={password}
                 />
@@ -76,6 +84,13 @@ export default function LoginPage() {
                   <AsyncButton type="submit" variant="outline">
                     <fbt desc="Sign in button">Sign In</fbt>{" "}
                   </AsyncButton>
+                  <p className="text-sm text-red-700 not-empty:mt-3 dark:text-red-400" role="alert">
+                    {signInFailed && !isSigningIn && (
+                      <fbt desc="Error after a failed sign in">
+                        Could not sign in. Check your email and password, then try again.
+                      </fbt>
+                    )}
+                  </p>
                 </div>
               </VStack>
             </Stack>

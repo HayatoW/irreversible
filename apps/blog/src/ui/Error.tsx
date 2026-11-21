@@ -9,12 +9,13 @@ export default function Error({ error: initialError }: { error: unknown }) {
       </h3>
       <code>{error ? error.stack || `fate Error: ${error.message}` : String(initialError)}</code>
       <div>
-        <a
+        <button
           className="cursor-pointer underline decoration-gray-300 hover:no-underline"
           onClick={() => window.location.reload()}
+          type="button"
         >
           <fbt desc="Try again button">Try again</fbt>{" "}
-        </a>
+        </button>
       </div>
     </VStack>
   );

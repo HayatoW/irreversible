@@ -67,23 +67,21 @@ export default function Header() {
           </Button>
           <div className="flex w-9 justify-end sm:w-24">
             {session ? (
-              <Button asChild className="w-full" size="sm" variant="ghost">
-                <Stack
-                  alignCenter
-                  as="a"
-                  className="text-sm font-medium text-gray-700 transition hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
-                  gap={4}
-                  onClick={async () => {
-                    await AuthClient.signOut();
-                    router.flushAll();
-                    await router.refresh({ preserveState: false });
-                  }}
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">
-                    <fbt desc="Logout button">Logout</fbt>
-                  </span>
-                </Stack>
+              <Button
+                className="w-full"
+                onClick={async () => {
+                  await AuthClient.signOut();
+                  router.flushAll();
+                  await router.refresh({ preserveState: false });
+                }}
+                size="sm"
+                type="button"
+                variant="ghost"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="sr-only sm:not-sr-only">
+                  <fbt desc="Logout button">Logout</fbt>
+                </span>
               </Button>
             ) : (
               <Button asChild className="w-full" size="sm" variant="ghost">
