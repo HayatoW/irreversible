@@ -11,7 +11,6 @@ export default defineConfig({
     htmlAttrs: {
       lang: "en",
     },
-    link: [{ href: "/icon.svg", rel: "icon" }],
     meta: [
       { charset: "utf8" },
       { content: "width=device-width, initial-scale=1", name: "viewport" },
