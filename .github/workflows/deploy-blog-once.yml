@@ -42,7 +42,8 @@ jobs:
           assert.equal(config.name, "blog");
           assert.equal(config.workers_dev, true);
           assert.equal(config.preview_urls, false);
-          for (const key of ["routes", "route", "migrations", "d1_databases", "durable_objects", "services"]) {
+          assert.deepEqual(config.routes, []);
+          for (const key of ["route", "migrations", "d1_databases", "durable_objects", "services"]) {
             assert.equal(config[key], undefined, `Unexpected config key: ${key}`);
           }
           assert.deepEqual(config.kv_namespaces, [{ binding: "ISR_CACHE", id: "a31ed920b7464ba8ad0d478cfde962e9" }]);
@@ -77,6 +78,7 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ steps.baseline.outputs.account }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_WORKERS_SUBDOMAIN: irreversible
         run: vp exec void deploy --platform cloudflare
       - name: Verify the live blog no longer forwards requests
         env:
