@@ -12,7 +12,7 @@ export default function PortfolioLayout({ children }: { children: ReactNode }) {
           <a className="text-lg font-semibold hover:underline" href="/">
             Irreversible
           </a>
-          <a className="hover:underline" href="/blog">
+          <a className="hover:underline" href="/posts">
             Blog
           </a>
         </nav>

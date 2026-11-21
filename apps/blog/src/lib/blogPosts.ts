@@ -3,7 +3,7 @@ import pages from "@void/md/pages";
 export const blogPosts = pages
   .flatMap(({ frontmatter, path, title }) => {
     const { description, lang, publishedAt } = frontmatter;
-    return path.startsWith("/blog/") &&
+    return path.startsWith("/posts/") &&
       typeof description === "string" &&
       typeof publishedAt === "string"
       ? [

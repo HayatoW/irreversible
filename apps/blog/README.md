@@ -1,6 +1,6 @@
 # Irreversible Blog
 
-The blog uses the Void pages router with React. Articles are Markdown files in `pages/blog/`; their filenames determine their public URLs.
+The blog uses the Void pages router with React. The post list is at `/posts`. Articles are Markdown files in `pages/posts/`; their filenames determine their public URLs.
 
 ## Local Development
 
