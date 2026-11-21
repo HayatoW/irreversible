@@ -43,7 +43,13 @@
         "database_id": "d60dfb64-7a56-4198-9974-b2bc8e722116",
         "migrations_dir": "./db/migrations"
       }
+    ],
+    "kv_namespaces": [
+      {
+        "binding": "ISR_CACHE",
+        "id": "a31ed920b7464ba8ad0d478cfde962e9"
+      }
     ]
   },
-  "text": "{\n  \"durable_objects\": {\n    \"bindings\": [\n      {\n        \"class_name\": \"VoidLiveStreamDurableObject\",\n        \"name\": \"VOID_LIVE\"\n      }\n    ]\n  },\n  \"migrations\": [\n    {\n      \"new_sqlite_classes\": [\n        \"VoidLiveStreamDurableObject\"\n      ],\n      \"tag\": \"live-v1\"\n    }\n  ],\n  \"name\": \"irreversible-blog\",\n  \"workers_dev\": true,\n  \"account_id\": \"1c5b61e0bfd3a45c3b3c10207fb6136d\",\n  \"d1_databases\": [\n    {\n      \"binding\": \"DB\",\n      \"database_name\": \"irreversible-blog-db\",\n      \"database_id\": \"d60dfb64-7a56-4198-9974-b2bc8e722116\",\n      \"migrations_dir\": \"./db/migrations\"\n    }\n  ]\n}\n"
+  "text": "{\n  \"durable_objects\": {\n    \"bindings\": [\n      {\n        \"class_name\": \"VoidLiveStreamDurableObject\",\n        \"name\": \"VOID_LIVE\"\n      }\n    ]\n  },\n  \"migrations\": [\n    {\n      \"new_sqlite_classes\": [\n        \"VoidLiveStreamDurableObject\"\n      ],\n      \"tag\": \"live-v1\"\n    }\n  ],\n  \"name\": \"irreversible-blog\",\n  \"workers_dev\": true,\n  \"account_id\": \"1c5b61e0bfd3a45c3b3c10207fb6136d\",\n  \"d1_databases\": [\n    {\n      \"binding\": \"DB\",\n      \"database_name\": \"irreversible-blog-db\",\n      \"database_id\": \"d60dfb64-7a56-4198-9974-b2bc8e722116\",\n      \"migrations_dir\": \"./db/migrations\"\n    }\n  ],\n  \"kv_namespaces\": [\n    {\n      \"binding\": \"ISR_CACHE\",\n      \"id\": \"a31ed920b7464ba8ad0d478cfde962e9\"\n    }\n  ]\n}\n"
 }
