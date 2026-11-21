@@ -7,10 +7,10 @@ import {
   hasNestedSelection,
 } from "@nkzw/fate/server";
 import { createDrizzleSourceAdapter, type DrizzleQueryExtra } from "@nkzw/fate/server/drizzle";
-import { like } from "drizzle-orm";
 import { createVoidFateLive } from "void-fate/server";
 import { db, eq } from "void/db";
 import { z } from "zod";
+import { containsLiteral } from "../../db/containsLiteral.ts";
 import {
   type CommentItem,
   type PostItem,
@@ -57,15 +57,15 @@ export const fateServer = createFateServer({
   lists: {
     commentSearch: {
       resolve: async ({ ctx, input, select }: ListResolverOptions) => {
-        const query = input.args?.query;
-        if (typeof query !== "string" || !query.trim().length) {
+        const query = typeof input.args?.query === "string" ? input.args.query.trim() : "";
+        if (!query) {
           return {
             items: [],
             pagination: { hasNext: false, hasPrevious: false },
           };
         }
 
-        if (isDevelopment && query.trim().length > 1) {
+        if (isDevelopment && query.length > 1) {
           await new Promise((resolve) => setTimeout(resolve, 500));
         }
 
@@ -76,10 +76,7 @@ export const fateServer = createFateServer({
           cursor,
           direction: "forward",
           extra: {
-            where: like(
-              comment.content,
-              `%${query.trim()}%`,
-            ) as unknown as DrizzleQueryExtra["where"],
+            where: containsLiteral(comment.content, query) as unknown as DrizzleQueryExtra["where"],
           },
           input: { args: input.args, select },
           skip: cursor ? 1 : undefined,
