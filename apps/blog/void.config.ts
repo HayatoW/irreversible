@@ -4,6 +4,7 @@ export default defineConfig({
   cloudflare: {
     name: "blog",
     preview_urls: false,
+    routes: [],
     workers_dev: true,
   },
   head: {
