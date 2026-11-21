@@ -18,7 +18,7 @@ vp run dev:blog
 リポジトリの本番ワークフローは `apps/website` だけをデプロイします。ブログは `blog` Worker に直接デプロイし、[blog.irreversible.workers.dev](https://blog.irreversible.workers.dev/posts) で公開します。`apps/blog` で次を実行してください。
 
 ```sh
-vp exec void deploy --platform cloudflare
+CLOUDFLARE_WORKERS_SUBDOMAIN=irreversible vp exec void deploy --platform cloudflare
 ```
 
 CI で使う Cloudflare API トークンは `void.lock.json` のアカウントに限定し、Workers Scripts: Edit と Workers KV Storage: Edit を付与してください。Markdown ページのキャッシュには KV を使います。D1 は使いません。
