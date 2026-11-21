@@ -1,0 +1,92 @@
+name: Attach the standalone blog domain
+
+on:
+  push:
+    branches: [blog]
+    paths: [.github/workflows/attach-blog-domain-once.yml]
+
+permissions:
+  contents: read
+
+concurrency: irreversible-blog-deploy
+
+jobs:
+  attach-domain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Attach the blog subdomain without replacing any records
+        working-directory: apps/blog
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { resolve4, resolve6, resolveCname } from "node:dns/promises";
+          import { appendFileSync, readFileSync } from "node:fs";
+
+          const token = process.env.CLOUDFLARE_API_TOKEN;
+          const mainWorker = "irreversible";
+          const blogWorker = "irreversible-blog";
+          const { resolved: lock } = JSON.parse(readFileSync("void.lock.json", "utf8"));
+          if (!token || lock.name !== blogWorker || !/^[a-f0-9]{32}$/.test(lock.account_id)) {
+            throw new Error("Expected the blog deployment lock and a Cloudflare token.");
+          }
+
+          async function request(path, payload) {
+            const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${lock.account_id}${path}`, {
+              method: payload ? "PUT" : "GET",
+              headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+              body: payload ? JSON.stringify(payload) : undefined,
+              signal: AbortSignal.timeout(15000),
+            });
+            const body = await response.json();
+            if (!response.ok || !body.success) {
+              const codes = (body.errors ?? []).map(({ code }) => code).filter(Number.isInteger);
+              throw new Error(`Cloudflare Worker Domains API: HTTP ${response.status}, codes: ${codes.join(", ")}`);
+            }
+            return body.result;
+          }
+
+          const path = "/workers/domains";
+          const domains = await request(`${path}?service=${mainWorker}`);
+          const zones = new Map();
+          for (const domain of domains) {
+            const { service, hostname, zone_name, zone_id } = domain;
+            if (service === mainWorker && typeof zone_name === "string" &&
+                /^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(zone_name) &&
+                /^[a-f0-9]{32}$/.test(zone_id) &&
+                (hostname === zone_name || hostname === `www.${zone_name}`)) {
+              zones.set(zone_id, zone_name);
+            }
+          }
+          if (zones.size !== 1) {
+            throw new Error(`Expected one parent domain for the existing site, found ${zones.size}; nothing changed.`);
+          }
+          const [[zone_id, zone]] = zones;
+          const hostname = `blog.${zone}`;
+          const current = await request(`${path}?hostname=${encodeURIComponent(hostname)}`);
+          const correct = ({ hostname: found, service, zone_id: id, enabled }) =>
+            found === hostname && service === blogWorker && id === zone_id && enabled !== false;
+          if (current.length) {
+            if (current.length !== 1 || !correct(current[0])) {
+              throw new Error("The blog hostname is already in use; nothing changed.");
+            }
+          } else {
+            for (const lookup of [resolve4, resolve6, resolveCname]) {
+              const records = await lookup(hostname).catch((error) => {
+                if (["ENOTFOUND", "ENODATA"].includes(error.code)) return [];
+                throw error;
+              });
+              if (records.length) throw new Error("The blog hostname already resolves; nothing changed.");
+            }
+            const added = await request(path, {
+              hostname, service: blogWorker, zone_id, enabled: true, previews_enabled: false,
+            });
+            if (!correct(added)) throw new Error("Could not confirm the new blog domain binding.");
+          }
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY, `Blog Worker domain: https://${hostname}\n`);
+          console.log(`Blog Worker domain: https://${hostname}`);
+          NODE
