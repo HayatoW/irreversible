@@ -2,17 +2,8 @@ import { defineConfig } from "void/config";
 
 export default defineConfig({
   cloudflare: {
-    migrations: [
-      {
-        new_sqlite_classes: ["VoidLiveStreamDurableObject"],
-        tag: "live-v1",
-      },
-      {
-        deleted_classes: ["VoidLiveStreamDurableObject"],
-        tag: "remove-playground-v1",
-      },
-    ],
-    name: "irreversible-blog",
+    name: "blog",
+    preview_urls: false,
     workers_dev: true,
   },
   head: {

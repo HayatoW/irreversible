@@ -1,31 +1,12 @@
 {
   "version": 1,
   "source": {
-    "migrations": [
-      {
-        "new_sqlite_classes": ["VoidLiveStreamDurableObject"],
-        "tag": "live-v1"
-      },
-      {
-        "deleted_classes": ["VoidLiveStreamDurableObject"],
-        "tag": "remove-playground-v1"
-      }
-    ],
-    "name": "irreversible-blog",
+    "name": "blog",
+    "preview_urls": false,
     "workers_dev": true
   },
   "resolved": {
-    "migrations": [
-      {
-        "new_sqlite_classes": ["VoidLiveStreamDurableObject"],
-        "tag": "live-v1"
-      },
-      {
-        "deleted_classes": ["VoidLiveStreamDurableObject"],
-        "tag": "remove-playground-v1"
-      }
-    ],
-    "name": "irreversible-blog",
+    "name": "blog",
     "workers_dev": true,
     "account_id": "1c5b61e0bfd3a45c3b3c10207fb6136d",
     "kv_namespaces": [
@@ -33,7 +14,8 @@
         "binding": "ISR_CACHE",
         "id": "a31ed920b7464ba8ad0d478cfde962e9"
       }
-    ]
+    ],
+    "preview_urls": false
   },
-  "text": "{\n  \"migrations\": [\n    {\n      \"new_sqlite_classes\": [\n        \"VoidLiveStreamDurableObject\"\n      ],\n      \"tag\": \"live-v1\"\n    },\n    {\n      \"deleted_classes\": [\n        \"VoidLiveStreamDurableObject\"\n      ],\n      \"tag\": \"remove-playground-v1\"\n    }\n  ],\n  \"name\": \"irreversible-blog\",\n  \"workers_dev\": true,\n  \"account_id\": \"1c5b61e0bfd3a45c3b3c10207fb6136d\",\n  \"kv_namespaces\": [\n    {\n      \"binding\": \"ISR_CACHE\",\n      \"id\": \"a31ed920b7464ba8ad0d478cfde962e9\"\n    }\n  ]\n}\n"
+  "text": "{\n  \"name\": \"blog\",\n  \"workers_dev\": true,\n  \"account_id\": \"1c5b61e0bfd3a45c3b3c10207fb6136d\",\n  \"kv_namespaces\": [\n    {\n      \"binding\": \"ISR_CACHE\",\n      \"id\": \"a31ed920b7464ba8ad0d478cfde962e9\"\n    }\n  ],\n  \"preview_urls\": false\n}\n"
 }

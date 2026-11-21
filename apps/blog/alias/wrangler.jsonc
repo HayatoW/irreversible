@@ -1,8 +1,0 @@
-{
-  "name": "blog",
-  "main": "worker.js",
-  "compatibility_date": "2025-12-01",
-  "workers_dev": true,
-  "preview_urls": false,
-  "services": [{ "binding": "BLOG", "service": "irreversible-blog" }],
-}
