@@ -29,8 +29,9 @@ the site and building it in CI require only the Node.js toolchain.
 
 ## Deployment
 
-The `Deploy Field Desk` workflow builds the app and deploys the
-`irreversible-field-desk` Worker through Void when the app changes on `main`.
+The `Deploy Field Desk` workflow builds the app and deploys the `field-desk`
+Worker through Void when the app changes on `main`. The app is available at
+<https://field-desk.irreversible.workers.dev/>.
 For a local deploy, sign in to the configured Cloudflare account, build with
 `vp run field-desk#build`, then run `vp run deploy --dir dist --spa` from this
 directory.
