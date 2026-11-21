@@ -1,4 +1,3 @@
-import nkzw from "@nkzw/oxlint-config";
 import tailwindcss from "@tailwindcss/vite";
 import { voidMarkdown } from "@void/md/plugin";
 import { voidReact } from "@void/react/plugin";
@@ -27,7 +26,6 @@ export default defineConfig({
     singleQuote: true,
   },
   lint: {
-    extends: [nkzw],
     ignorePatterns: [
       "**/.cloudflare/**",
       ".void",
