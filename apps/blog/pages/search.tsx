@@ -2,9 +2,10 @@ import Stack, { VStack } from "@nkzw/stack";
 import { fbs } from "fbtee";
 import { Suspense, useDeferredValue, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useRequest, useView, view, ViewRef } from "react-fate";
+import { useListView, useRequest, useView, view, ViewRef } from "react-fate";
 import type { Comment, Post } from "../src/fate/views.ts";
 import cx from "../src/lib/cx.tsx";
+import { Button } from "../src/ui/Button.tsx";
 import Card from "../src/ui/Card.tsx";
 import CommentCard, { CommentView } from "../src/ui/CommentCard.tsx";
 import Error from "../src/ui/Error.tsx";
@@ -33,11 +34,17 @@ const CommentResult = ({ comment: commentRef }: { comment: ViewRef<"Comment"> })
 };
 
 const SearchResults = ({ isStale, query }: { isStale: boolean; query: string }) => {
+  const selection = {
+    args: { first: 20, query },
+    items: { node: CommentSearchView },
+    pagination: { hasNext: true },
+  } as const;
   const { commentSearch } = useRequest({
-    commentSearch: { args: { query }, list: CommentSearchView },
+    commentSearch: { list: selection },
   });
+  const [results, loadNext] = useListView(selection, commentSearch);
 
-  if (commentSearch.length === 0) {
+  if (results.length === 0) {
     return (
       <p>
         <fbt desc="Empty comment search results">
@@ -52,9 +59,16 @@ const SearchResults = ({ isStale, query }: { isStale: boolean; query: string }) 
 
   return (
     <VStack className={cx(isStale && "opacity-50")} gap={12}>
-      {commentSearch.map((comment) => (
-        <CommentResult comment={comment} key={comment.id} />
+      {results.map(({ node }) => (
+        <CommentResult comment={node} key={node.id} />
       ))}
+      {loadNext && (
+        <Stack center>
+          <Button onClick={loadNext} type="button" variant="ghost">
+            <fbt desc="Load more comments button">Load more comments</fbt>{" "}
+          </Button>
+        </Stack>
+      )}
     </VStack>
   );
 };
@@ -90,7 +104,9 @@ export default function SearchPage() {
               </h2>
             }
           >
-            {query.trim().length > 0 ? <SearchResults isStale={isStale} query={query} /> : null}
+            {query.trim() && deferredQuery.trim() ? (
+              <SearchResults isStale={isStale} query={deferredQuery} />
+            ) : null}
           </Suspense>
         </ErrorBoundary>
       </Card>
