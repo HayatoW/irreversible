@@ -858,6 +858,39 @@
         }
       ],
       "types": []
+    },
+    "aiUzTz0fCeHsaTJ8Q9eGTQ==": {
+      "description": "Sign in email label",
+      "tokens": [],
+      "translations": [
+        {
+          "translation": "E-Mail-Adresse",
+          "variations": {}
+        }
+      ],
+      "types": []
+    },
+    "a3up+Eqd/JZNZix9DNO+GA==": {
+      "description": "Sign in password label",
+      "tokens": [],
+      "translations": [
+        {
+          "translation": "Passwort",
+          "variations": {}
+        }
+      ],
+      "types": []
+    },
+    "FBBkPWOn3GH6RGPvZjLNgA==": {
+      "description": "Error after a failed sign in",
+      "tokens": [],
+      "translations": [
+        {
+          "translation": "Die Anmeldung ist fehlgeschlagen. Prüfe deine E-Mail-Adresse und dein Passwort und versuche es erneut.",
+          "variations": {}
+        }
+      ],
+      "types": []
     }
   }
 }

@@ -858,6 +858,39 @@
         }
       ],
       "types": []
+    },
+    "aiUzTz0fCeHsaTJ8Q9eGTQ==": {
+      "description": "Sign in email label",
+      "tokens": [],
+      "translations": [
+        {
+          "translation": "メールアドレス",
+          "variations": {}
+        }
+      ],
+      "types": []
+    },
+    "a3up+Eqd/JZNZix9DNO+GA==": {
+      "description": "Sign in password label",
+      "tokens": [],
+      "translations": [
+        {
+          "translation": "パスワード",
+          "variations": {}
+        }
+      ],
+      "types": []
+    },
+    "FBBkPWOn3GH6RGPvZjLNgA==": {
+      "description": "Error after a failed sign in",
+      "tokens": [],
+      "translations": [
+        {
+          "translation": "サインインできませんでした。メールアドレスとパスワードを確認して、もう一度お試しください。",
+          "variations": {}
+        }
+      ],
+      "types": []
     }
   }
 }
