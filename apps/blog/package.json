@@ -7,9 +7,12 @@
   "scripts": {
     "build": "vp build",
     "dev": "vp dev",
-    "prepare:void": "void prepare"
+    "prepare:void": "void prepare",
+    "test": "vp test --config ../../vite.config.ts src/ui/BlogPostList.test.tsx"
   },
   "dependencies": {
+    "@ui-sdk/core": "catalog:",
+    "@ui-sdk/react": "catalog:",
     "@void/md": "catalog:",
     "@void/react": "^1.7.0",
     "react": "^19.3.1",
