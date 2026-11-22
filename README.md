@@ -36,3 +36,12 @@ vp run dev:blog
 `vp run field-desk#dev` で Three.js の 3D ビューアを起動できます。
 公開先は Void で管理する専用の Cloudflare Worker です。Blender でのモデル再生成と
 デプロイの手順は [Field Desk の README](apps/field-desk/README.md) を参照してください。
+
+## PR Previews
+
+`main` 向けの同一リポジトリ内の PR では、Cloudflare Workers Previews が
+Blog と Field Desk を公開します。URL は PR のコメントに表示され、追加コミットで
+同じ URL が更新されます。PR を閉じると Preview は削除されます。
+
+Preview は公開 URL ですが、本番のトラフィックや Blog の ISR 用 KV には接続しません。
+フォークと Dependabot の PR では、シークレットを使うデプロイは実行しません。

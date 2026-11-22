@@ -167,6 +167,9 @@ catalogs:
     '@void/md':
       specifier: 1.8.0
       version: 1.8.0
+    cf:
+      specifier: 1.0.0-beta.31
+      version: 1.0.0-beta.31
     typescript:
       specifier: ^7.0.2
       version: 7.0.2
@@ -187,6 +190,9 @@ importers:
 
   .:
     devDependencies:
+      cf:
+        specifier: 'catalog:'
+        version: 1.0.0-beta.31(@types/node@26.6.6)
       vite-plus:
         specifier: 'catalog:'
         version: 1.6.0(@types/node@26.6.6)(@vitest/ui@5.1.0)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(typescript@7.0.2)(yaml@2.9.1)
