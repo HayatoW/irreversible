@@ -1,11 +1,18 @@
+"use client";
+
+import { createParts } from "@ui-sdk/react/primitive";
 import type { blogPosts } from "../lib/blogPosts.ts";
+import { postList } from "./post-list.ts";
+
+const { Root, Link } = createParts(postList, { root: "ul", link: "a" });
 
 export default function BlogPostList({ posts }: { posts: typeof blogPosts }) {
   return (
-    <ul className="space-y-4">
+    <Root aria-label="Blog posts" className="space-y-4">
       {posts.map(({ description, lang, path, publishedAt, title }) => (
         <li key={path}>
-          <a
+          <Link
+            value={path}
             className="group block rounded-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[CanvasText]"
             href={path}
           >
@@ -21,9 +28,9 @@ export default function BlogPostList({ posts }: { posts: typeof blogPosts }) {
               </h3>
               <p className="mt-1 text-muted-foreground">{description}</p>
             </article>
-          </a>
+          </Link>
         </li>
       ))}
-    </ul>
+    </Root>
   );
 }
