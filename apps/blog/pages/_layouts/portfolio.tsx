@@ -9,10 +9,10 @@ export default function PortfolioLayout({ children }: { children: ReactNode }) {
           aria-label="Main"
           className="mx-auto flex max-w-3xl items-center justify-between gap-6 px-6 py-5"
         >
-          <a className="text-lg font-semibold hover:underline" href="/">
+          <a className="font-artemis text-lg font-semibold hover:underline" href="/">
             Irreversible
           </a>
-          <a className="hover:underline" href="/posts">
+          <a className="font-artemis hover:underline" href="/posts">
             Posts
           </a>
         </nav>
