@@ -48,6 +48,22 @@ jobs:
             .cloudflare/output/v0/workers/default/worker.config.json > /dev/null
       - name: Build Field Desk
         run: vp run field-desk#build
+      - name: Enable workers.dev Preview hosts for existing Workers
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          for worker in blog field-desk; do
+            endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/scripts/${worker}/subdomain"
+            settings=$(curl --fail-with-body --silent --show-error \
+              --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" "$endpoint")
+            if ! jq -e '.result.previews_enabled == true' <<< "$settings" > /dev/null; then
+              body=$(jq -ce '.result | select(.enabled | type == "boolean") | {enabled, previews_enabled: true}' <<< "$settings")
+              curl --fail-with-body --silent --show-error --request POST \
+                --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+                --header "Content-Type: application/json" --data "$body" "$endpoint" |
+                jq -e '.success and .result.previews_enabled == true'
+            fi
+          done
       - name: Deploy blog Preview
         id: blog
         working-directory: apps/blog
@@ -55,7 +71,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           result=$("$GITHUB_WORKSPACE/node_modules/.bin/cf" previews deploy --prebuilt --mode production --preview-name "pr-${PR_NUMBER}")
-          url=$(jq -er '.preview_urls[0] | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$"))' <<< "$result")
+          url=$(jq -er 'first(.preview_urls[] | strings | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$")))' <<< "$result")
           echo "url=${url%/}" >> "$GITHUB_OUTPUT"
       - name: Deploy Field Desk Preview
         id: field-desk
@@ -64,7 +80,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           result=$("$GITHUB_WORKSPACE/node_modules/.bin/cf" previews deploy ./dist --preview-name "pr-${PR_NUMBER}")
-          url=$(jq -er '.preview_urls[0] | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$"))' <<< "$result")
+          url=$(jq -er 'first(.preview_urls[] | strings | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$")))' <<< "$result")
           echo "url=${url%/}" >> "$GITHUB_OUTPUT"
       - name: Smoke-test Preview URLs
         env:

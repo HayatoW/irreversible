@@ -5,7 +5,7 @@ const isPreview = process.env.CLOUDFLARE_PREVIEW_BUILD === "true";
 export default defineConfig({
   cloudflare: {
     name: "blog",
-    preview_urls: false,
+    preview_urls: true,
     routes: [],
     workers_dev: true,
     ...(isPreview && { kv_namespaces: [] }),
