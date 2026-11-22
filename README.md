@@ -29,3 +29,9 @@ vp run -r build
 ```bash
 vp run dev
 ```
+
+## Field Desk
+
+`vp run field-desk#dev` で Three.js の 3D ビューアを起動できます。
+公開先は Void で管理する専用の Cloudflare Worker です。Blender でのモデル再生成と
+デプロイの手順は [Field Desk の README](apps/field-desk/README.md) を参照してください。
