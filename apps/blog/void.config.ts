@@ -11,6 +11,14 @@ export default defineConfig({
     htmlAttrs: {
       lang: "en",
     },
+    link: [
+      { crossorigin: "", href: "https://cdn.jsdelivr.net", rel: "preconnect" },
+      // Gen Interface JP (https://gen.typesetting.jp/) — 本文で使うウエイトのみ読み込む
+      ...[400, 500, 600, 700].map((weight) => ({
+        href: `https://cdn.jsdelivr.net/npm/gen-interface-jp@0.8.0/cdn/${weight}.css`,
+        rel: "stylesheet",
+      })),
+    ],
     meta: [
       { charset: "utf8" },
       { content: "width=device-width, initial-scale=1", name: "viewport" },
