@@ -15,7 +15,7 @@ vp run dev:blog
 
 ## Cloudflare へのデプロイ
 
-リポジトリの本番ワークフローは `apps/website` だけをデプロイします。ブログは `blog` Worker に直接デプロイし、[blog.irreversible.workers.dev](https://blog.irreversible.workers.dev/posts) で公開します。`apps/blog` で次を実行してください。
+ブログは `blog` Worker にデプロイし、[blog.irreversible.workers.dev](https://blog.irreversible.workers.dev/posts) で公開します。`main` でアプリに変更が入ると `Deploy Blog` ワークフローが自動でデプロイします。手動でデプロイする場合は `apps/blog` で次を実行してください。
 
 ```sh
 CLOUDFLARE_WORKERS_SUBDOMAIN=irreversible vp exec void deploy --platform cloudflare
