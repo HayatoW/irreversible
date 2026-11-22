@@ -1,6 +1,7 @@
 # Irreversible
 
 [![CI](https://github.com/HayatoW/irreversible/actions/workflows/ci.yml/badge.svg)](https://github.com/HayatoW/irreversible/actions/workflows/ci.yml)
+[![Built by Devin](https://raw.githubusercontent.com/club-cog/built-by-devin/main/badges/built-by-devin.svg)](https://devin.ai)
 
 HayatoW's portfolio.
 
