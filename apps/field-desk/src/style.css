@@ -41,6 +41,11 @@ body {
   font-size: 13px;
 }
 
+.disclaimer {
+  flex-basis: 100%;
+  margin: 0 0 4px;
+}
+
 .reference,
 .site-footer a {
   display: inline-flex;
