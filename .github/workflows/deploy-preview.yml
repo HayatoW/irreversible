@@ -1,0 +1,125 @@
+name: Deploy PR Previews
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, closed]
+
+permissions: {}
+
+concurrency:
+  group: cloudflare-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+env:
+  CF_SEND_TELEMETRY: "false"
+  CLOUDFLARE_ACCOUNT_ID: 1c5b61e0bfd3a45c3b3c10207fb6136d
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+
+jobs:
+  deploy:
+    if: >-
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    environment: Preview
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      blog: ${{ steps.blog.outputs.url }}
+      field-desk: ${{ steps.field-desk.outputs.url }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          node-version: "24"
+          cache: true
+      - name: Build blog with Void for Cloudflare Previews
+        working-directory: apps/blog
+        env:
+          CLOUDFLARE_PREVIEW_BUILD: "true"
+        run: |
+          vp build
+          jq -e '.name == "blog" and ((.env // {}) | del(.ASSETS) == {})' \
+            .cloudflare/output/v0/workers/default/worker.config.json > /dev/null
+      - name: Build Field Desk
+        run: vp run field-desk#build
+      - name: Deploy blog Preview
+        id: blog
+        working-directory: apps/blog
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          result=$("$GITHUB_WORKSPACE/node_modules/.bin/cf" previews deploy --prebuilt --mode production --preview-name "pr-${PR_NUMBER}")
+          url=$(jq -er 'first(.preview_urls[] | strings | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$")))' <<< "$result")
+          echo "url=${url%/}" >> "$GITHUB_OUTPUT"
+      - name: Deploy Field Desk Preview
+        id: field-desk
+        working-directory: apps/field-desk
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          result=$("$GITHUB_WORKSPACE/node_modules/.bin/cf" previews deploy ./dist --preview-name "pr-${PR_NUMBER}")
+          url=$(jq -er 'first(.preview_urls[] | strings | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$")))' <<< "$result")
+          echo "url=${url%/}" >> "$GITHUB_OUTPUT"
+      - name: Smoke-test Preview URLs
+        env:
+          BLOG_URL: ${{ steps.blog.outputs.url }}
+          FIELD_DESK_URL: ${{ steps.field-desk.outputs.url }}
+        run: |
+          curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 2 --max-time 15 "${BLOG_URL}/posts" > /dev/null
+          curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 2 --max-time 15 "${FIELD_DESK_URL}/" > /dev/null
+
+  comment:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BLOG_URL: ${{ needs.deploy.outputs.blog }}
+      FIELD_DESK_URL: ${{ needs.deploy.outputs.field-desk }}
+    steps:
+      - name: Post or update Preview links
+        run: |
+          marker='<!-- cloudflare-pr-previews -->'
+          body=$(printf '%s\n\n**Cloudflare Previews**\n\n- [Blog](%s/)\n- [Field Desk](%s/)\n' "$marker" "$BLOG_URL" "$FIELD_DESK_URL")
+          comments="/repos/${GH_REPO}/issues/${PR_NUMBER}/comments"
+          comment_id=$(gh api --paginate --slurp "$comments" | jq -r --arg marker "$marker" \
+            '[.[][] | select(.user.login == "github-actions[bot]" and (.body | startswith($marker)))][0].id // empty')
+          if [[ -n "$comment_id" ]]; then
+            gh api --method PATCH "/repos/${GH_REPO}/issues/comments/${comment_id}" -f body="$body" > /dev/null
+          else
+            gh pr comment "$PR_NUMBER" --body "$body"
+          fi
+
+  cleanup:
+    if: >-
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - name: Delete closed PR Previews
+        run: |
+          failed=0
+          for worker in blog field-desk; do
+            endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/workers/${worker}/previews/pr-${PR_NUMBER}"
+            status=$(curl --silent --show-error --retry 3 --max-time 20 \
+              --output response.json --write-out '%{http_code}' --request DELETE \
+              --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" "$endpoint") || status=000
+            case "$status" in
+              200|204|404) ;;
+              *) echo "::error::Could not delete the ${worker} Preview (HTTP ${status})"; failed=1 ;;
+            esac
+          done
+          exit "$failed"

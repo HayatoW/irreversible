@@ -2,13 +2,14 @@
   "version": 1,
   "source": {
     "name": "blog",
-    "preview_urls": false,
+    "preview_urls": true,
     "routes": [],
     "workers_dev": true
   },
   "resolved": {
     "name": "blog",
-    "preview_urls": false,
+    "preview_urls": true,
+    "routes": [],
     "workers_dev": true,
     "account_id": "1c5b61e0bfd3a45c3b3c10207fb6136d",
     "kv_namespaces": [
@@ -16,8 +17,7 @@
         "binding": "ISR_CACHE",
         "id": "a31ed920b7464ba8ad0d478cfde962e9"
       }
-    ],
-    "routes": []
+    ]
   },
-  "text": "{\n  \"name\": \"blog\",\n  \"preview_urls\": false,\n  \"workers_dev\": true,\n  \"account_id\": \"1c5b61e0bfd3a45c3b3c10207fb6136d\",\n  \"kv_namespaces\": [\n    {\n      \"binding\": \"ISR_CACHE\",\n      \"id\": \"a31ed920b7464ba8ad0d478cfde962e9\"\n    }\n  ],\n  \"routes\": []\n}\n"
+  "text": "{\n  \"name\": \"blog\",\n  \"preview_urls\": true,\n  \"routes\": [],\n  \"workers_dev\": true,\n  \"account_id\": \"1c5b61e0bfd3a45c3b3c10207fb6136d\",\n  \"kv_namespaces\": [\n    {\n      \"binding\": \"ISR_CACHE\",\n      \"id\": \"a31ed920b7464ba8ad0d478cfde962e9\"\n    }\n  ]\n}\n"
 }

@@ -7,6 +7,7 @@ export default defineConfig({
   cloudflare: {
     account_id: "1c5b61e0bfd3a45c3b3c10207fb6136d",
     name: "field-desk",
+    preview_urls: true,
     workers_dev: true,
   },
 });

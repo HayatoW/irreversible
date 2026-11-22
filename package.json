@@ -9,6 +9,7 @@
     "dev:blog": "vp run blog#dev"
   },
   "devDependencies": {
+    "cf": "catalog:",
     "vite-plus": "catalog:"
   },
   "devEngines": {

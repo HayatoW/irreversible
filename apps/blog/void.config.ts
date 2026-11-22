@@ -1,11 +1,14 @@
 import { defineConfig } from "void/config";
 
+const isPreview = process.env.CLOUDFLARE_PREVIEW_BUILD === "true";
+
 export default defineConfig({
   cloudflare: {
     name: "blog",
-    preview_urls: false,
+    preview_urls: true,
     routes: [],
     workers_dev: true,
+    ...(isPreview && { kv_namespaces: [] }),
   },
   head: {
     htmlAttrs: {
@@ -25,7 +28,7 @@ export default defineConfig({
     ],
     title: "Irreversible",
   },
-  routing: { typedRoutes: true },
+  routing: { typedRoutes: true, ...(isPreview && { isr: false }) },
   worker: {
     compatibility_date: "2025-12-01",
     compatibility_flags: ["nodejs_compat", "no_handle_cross_request_promise_resolution"],
