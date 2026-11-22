@@ -6,7 +6,7 @@ export const layout = "!portfolio";
 export default function HomePage() {
   return (
     <>
-      <h1 className="text-5xl font-bold tracking-tight">Irreversible</h1>
+      <h1 className="font-artemis text-5xl font-bold tracking-tight">Irreversible</h1>
       <p className="mt-5 max-w-prose text-lg text-muted-foreground">
         Hello Friend. I build software and share my place with two cats. When I'm not coding, I'm
         usually listening to These New Puritans or Nils Frahm, or thinking about design—especially
