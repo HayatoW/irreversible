@@ -55,10 +55,6 @@ body {
   gap: 6px;
 }
 
-.reference span {
-  font-size: 14px;
-}
-
 .site-footer a {
   min-block-size: 36px;
   text-decoration: none;
