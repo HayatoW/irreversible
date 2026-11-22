@@ -30,9 +30,6 @@ body {
 }
 
 @layer base {
-  h1,
-  h2,
-  h3,
   .font-artemis {
     font-family: var(--font-artemis);
     font-synthesis: none;
