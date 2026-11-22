@@ -53,6 +53,11 @@ body {
 
 .reference {
   gap: 6px;
+  text-decoration: none;
+}
+
+.reference .label {
+  text-decoration: underline;
 }
 
 .site-footer a {
