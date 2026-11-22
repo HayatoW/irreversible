@@ -25,10 +25,10 @@ vp run -r test
 vp run -r build
 ```
 
-- Run the development server:
+- Run the blog development server:
 
 ```bash
-vp run dev
+vp run dev:blog
 ```
 
 ## Field Desk
