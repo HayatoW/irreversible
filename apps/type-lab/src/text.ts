@@ -1,7 +1,7 @@
 const segmenter = new Intl.Segmenter("ja", { granularity: "grapheme" });
 
 export function splitText(value: string) {
-  return Array.from(segmenter.segment(value.normalize("NFC")), ({ segment }) => segment);
+  return Array.from(segmenter.segment(value), ({ segment }) => segment);
 }
 
 export function limitText(value: string) {
