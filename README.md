@@ -37,6 +37,12 @@ vp run dev:blog
 公開先は Void で管理する専用の Cloudflare Worker です。Blender でのモデル再生成と
 デプロイの手順は [Field Desk の README](apps/field-desk/README.md) を参照してください。
 
+## Reading Room
+
+`vp run reading-room#dev` で、ブログ記事を DOM と WebGPU で読み比べるアプリを起動できます。
+境界線のドラッグ、記事の切り替え、WebGPU 非対応時の DOM 表示に対応しています。
+専用 Worker と PR Preview の手順は [Reading Room の README](apps/reading-room/README.md) を参照してください。
+
 ## PR Previews
 
 `main` 向けの同一リポジトリ内の PR では、Cloudflare Workers Previews が

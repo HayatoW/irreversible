@@ -1,0 +1,21 @@
+{
+  "name": "reading-room",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp run prepare:font && vp dev",
+    "build": "vp run prepare:font && tsc && vp build",
+    "test": "vp test",
+    "preview": "vp preview",
+    "deploy": "void deploy --platform cloudflare"
+  },
+  "devDependencies": {
+    "@webgpu/types": "^0.1.69",
+    "opentype.js": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}

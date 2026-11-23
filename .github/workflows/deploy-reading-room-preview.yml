@@ -1,0 +1,99 @@
+name: Reading Room PR Preview
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, closed]
+
+permissions: {}
+
+concurrency:
+  group: reading-room-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+env:
+  CF_SEND_TELEMETRY: "false"
+  CLOUDFLARE_ACCOUNT_ID: 1c5b61e0bfd3a45c3b3c10207fb6136d
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+
+jobs:
+  deploy:
+    if: >-
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    environment: Preview
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      url: ${{ steps.preview.outputs.url }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          node-version: "24"
+          cache: true
+      - name: Build Reading Room
+        run: vp run reading-room#build
+      - name: Deploy Reading Room Preview
+        id: preview
+        working-directory: apps/reading-room
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          result=$("$GITHUB_WORKSPACE/node_modules/.bin/cf" previews deploy ./dist --preview-name "pr-${PR_NUMBER}")
+          url=$(jq -er 'first(.preview_urls[] | strings | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$")))' <<< "$result")
+          echo "url=${url%/}" >> "$GITHUB_OUTPUT"
+      - name: Smoke-test Preview
+        env:
+          PREVIEW_URL: ${{ steps.preview.outputs.url }}
+        run: curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 2 --max-time 15 "${PREVIEW_URL}/" > /dev/null
+
+  comment:
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      PREVIEW_URL: ${{ needs.deploy.outputs.url }}
+    steps:
+      - name: Post or update Reading Room link
+        run: |
+          marker='<!-- reading-room-preview -->'
+          body=$(printf '%s\n\n**Reading Room**\n\n[Open Preview](%s/)\n' "$marker" "$PREVIEW_URL")
+          comments="/repos/${GH_REPO}/issues/${PR_NUMBER}/comments"
+          comment_id=$(gh api --paginate --slurp "$comments" | jq -r --arg marker "$marker" \
+            '[.[][] | select(.user.login == "github-actions[bot]" and (.body | startswith($marker)))][0].id // empty')
+          if [[ -n "$comment_id" ]]; then
+            gh api --method PATCH "/repos/${GH_REPO}/issues/comments/${comment_id}" -f body="$body" > /dev/null
+          else
+            gh pr comment "$PR_NUMBER" --body "$body"
+          fi
+
+  cleanup:
+    if: >-
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - name: Delete Reading Room Preview
+        run: |
+          endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/workers/reading-room/previews/pr-${PR_NUMBER}"
+          status=$(curl --silent --show-error --retry 3 --max-time 20 \
+            --output response.json --write-out '%{http_code}' --request DELETE \
+            --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" "$endpoint") || status=000
+          case "$status" in
+            200|204|404) ;;
+            *) echo "::error::Could not delete Reading Room Preview (HTTP ${status})"; exit 1 ;;
+          esac

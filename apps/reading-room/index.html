@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f3f0e8" />
+    <meta
+      name="description"
+      content="同じ文章を、ふたつの描画で。ブログの記事を DOM と WebGPU で読み比べる実験的な Reading Room。"
+    />
+    <title>Reading Room — Irreversible</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f3f0e8'/%3E%3Cpath d='M31 8h2v48h-2z' fill='%23c24628'/%3E%3Ctext x='9' y='43' font-family='serif' font-size='34'%3ER%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#article">本文へスキップ</a>
+    <header class="masthead">
+      <a class="wordmark" href="https://blog.irreversible.workers.dev/"
+        >IRREVERSIBLE<span>®</span></a
+      >
+      <span class="mono">WEB EXPERIMENTS <span class="muted">/</span> № 01</span>
+      <a
+        class="reference"
+        href="https://domgl-text.jesperlandberg.com/"
+        target="_blank"
+        rel="noreferrer"
+        >Inspired by Glyph ↗</a
+      >
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="room-title">
+        <div>
+          <p class="eyebrow">A SMALL EXPERIMENT IN READING</p>
+          <h1 id="room-title">Reading <em>Room.</em></h1>
+        </div>
+        <div class="intro-note">
+          <span class="asterisk" aria-hidden="true">✳</span>
+          <p>
+            同じ文章を、ふたつの描画で。<br />境界を動かすと、ブラウザの文字が<br />GPU
+            のインクに切り替わります。
+          </p>
+        </div>
+      </section>
+      <section class="reader" aria-label="記事の描画比較">
+        <div class="toolbar">
+          <div class="article-picker">
+            <label for="post">READING</label
+            ><select id="post">
+              <option value="neon">01 — Neon</option>
+              <option value="last-train-home">02 — Last Train Home</option>
+            </select>
+          </div>
+          <div class="view-switch" role="group" aria-label="表示モード">
+            <button type="button" data-split="100" aria-pressed="false">DOM</button
+            ><button type="button" data-split="50" aria-pressed="true">比較</button
+            ><button type="button" data-split="0" aria-pressed="false">GPU</button>
+          </div>
+          <div class="engine">
+            <span class="status-dot"></span><span id="status" role="status">GPU を準備中</span>
+          </div>
+        </div>
+        <div class="comparison-head">
+          <span class="mono"
+            >01 <strong>DOM</strong> <span class="head-detail">/ BROWSER TYPE</span></span
+          >
+          <label class="range-label" for="seam"
+            >境界をドラッグ <span aria-hidden="true">↔</span></label
+          >
+          <span class="mono"
+            >02 <strong>GPU</strong> <span class="head-detail">/ REDRAWN TYPE</span></span
+          >
+          <input
+            id="seam"
+            type="range"
+            min="0"
+            max="100"
+            step="1"
+            value="50"
+            aria-label="DOM と GPU の境界位置"
+            aria-valuetext="DOM 50%、GPU 50%"
+            disabled
+          />
+        </div>
+        <p id="fallback" class="fallback" hidden>
+          この環境では WebGPU を利用できないため、DOM で表示しています。記事はそのまま読めます。
+        </p>
+        <div class="page" id="page">
+          <aside class="folio">
+            <span class="mono" id="folio">01 / 02</span><span class="folio-rule"></span
+            ><span>NOTES ON<br />LIFE &amp; WORK</span>
+          </aside>
+          <div class="article-surface" id="surface">
+            <article id="article" tabindex="-1"></article>
+            <div class="seam-line" aria-hidden="true"><span>↔</span></div>
+          </div>
+          <aside class="article-index">
+            <p class="eyebrow">IN THIS ARTICLE</p>
+            <nav id="contents" aria-label="記事の目次"></nav>
+            <p class="index-note">言葉はそのまま。<br />描き方だけを変えて。</p>
+          </aside>
+        </div>
+        <div class="reader-foot mono">
+          <span id="metrics">NATIVE DOM TEXT</span><span id="ratio">DOM 50 / GPU 50</span
+          ><a href="#room-title">BACK TO TOP ↑</a>
+        </div>
+      </section>
+      <section class="colophon" aria-label="この実験について">
+        <p class="eyebrow">ABOUT THIS EXPERIMENT</p>
+        <p>レイアウトはブラウザに。<br /><em>描画は、もうひとつの方法で。</em></p>
+        <div>
+          元の記事の DOM を残したまま、フォントのベジェ曲線から WebGPU
+          で文字を描きます。選択・検索・読み上げはブラウザのまま。<br /><a
+            href="https://domgl-text.jesperlandberg.com/"
+            >Glyph</a
+          >
+          に着想を得た、文字の輪郭をピクセルごとに解く小さな実験です。
+        </div>
+      </section>
+    </main>
+    <footer class="site-foot">
+      <span>IRREVERSIBLE / READING ROOM</span><span>A DIFFERENT WAY TO SEE THE SAME WORDS.</span>
+    </footer>
+    <noscript
+      ><p class="fallback">
+        この記事の表示には JavaScript が必要です。<a
+          href="https://blog.irreversible.workers.dev/posts"
+          >元のブログを読む ↗</a
+        >
+      </p></noscript
+    >
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
