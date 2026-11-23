@@ -265,8 +265,11 @@ export class TextRenderer {
 
   private draw(): void {
     const dpr = Math.min(devicePixelRatio || 1, 2);
-    const width = Math.round(innerWidth * dpr);
-    const height = Math.round(innerHeight * dpr);
+    // Fixed canvas CSS dimensions exclude classic scrollbar gutters.
+    const viewport = this.canvas.getBoundingClientRect();
+    if (!viewport.width || !viewport.height) return;
+    const width = Math.round(viewport.width * dpr);
+    const height = Math.round(viewport.height * dpr);
     if (
       width > this.device.limits.maxTextureDimension2D ||
       height > this.device.limits.maxTextureDimension2D
@@ -276,11 +279,13 @@ export class TextRenderer {
       this.canvas.width = width;
       this.canvas.height = height;
     }
+    const scaleX = width / viewport.width;
+    const scaleY = height / viewport.height;
     const rect = this.surface.getBoundingClientRect();
-    const left = Math.max(0, Math.ceil((rect.left + (rect.width * this.split) / 100) * dpr));
-    const top = Math.max(0, Math.ceil(rect.top * dpr));
-    const right = Math.min(width, Math.floor(rect.right * dpr));
-    const bottom = Math.min(height, Math.floor(rect.bottom * dpr));
+    const left = Math.max(0, Math.ceil((rect.left + (rect.width * this.split) / 100) * scaleX));
+    const top = Math.max(0, Math.ceil(rect.top * scaleY));
+    const right = Math.min(width, Math.floor(rect.right * scaleX));
+    const bottom = Math.min(height, Math.floor(rect.bottom * scaleY));
     const selection = document.getSelection();
     const selecting =
       this.article.contains(document.activeElement) ||
@@ -291,7 +296,7 @@ export class TextRenderer {
     this.device.queue.writeBuffer(
       this.uniform,
       0,
-      new Float32Array([innerWidth, innerHeight, rect.left, rect.top]),
+      new Float32Array([viewport.width, viewport.height, rect.left, rect.top]),
     );
     const encoder = this.device.createCommandEncoder();
     const pass = encoder.beginRenderPass({
