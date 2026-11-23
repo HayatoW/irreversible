@@ -98,4 +98,24 @@ describe("GPU composition over native DOM", () => {
     expect(canvas.height).toBe(1280);
     expect(writeBuffer.mock.lastCall?.[2]).toEqual(new Float32Array([980, 640, 100, 100]));
   });
+
+  it("reveals native selection when select-all endpoints are outside the article", () => {
+    article.textContent = "Selected article text";
+    surface.before(document.createTextNode("Before the article"));
+    surface.after(document.createTextNode("After the article"));
+    frames.shift()!(0);
+    expect(draw).toHaveBeenCalled();
+    draw.mockClear();
+    const range = document.createRange();
+    range.selectNodeContents(document.body);
+    const selection = document.getSelection()!;
+    selection.removeAllRanges();
+    selection.addRange(range);
+    expect(article.contains(selection.anchorNode)).toBe(false);
+    expect(article.contains(selection.focusNode)).toBe(false);
+    document.dispatchEvent(new Event("selectionchange"));
+    frames.shift()!(0);
+    expect(draw).not.toHaveBeenCalled();
+    selection.removeAllRanges();
+  });
 });

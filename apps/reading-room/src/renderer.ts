@@ -291,8 +291,9 @@ export class TextRenderer {
       this.article.contains(document.activeElement) ||
       (selection &&
         !selection.isCollapsed &&
-        (this.article.contains(selection.anchorNode) ||
-          this.article.contains(selection.focusNode)));
+        Array.from({ length: selection.rangeCount }, (_, i) => selection.getRangeAt(i)).some(
+          (range) => range.intersectsNode(this.article),
+        ));
     this.device.queue.writeBuffer(
       this.uniform,
       0,
