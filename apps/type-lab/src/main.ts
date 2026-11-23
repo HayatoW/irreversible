@@ -1,6 +1,7 @@
 import "./style.css";
 import { decodeOutlines, specimenSize, supportedText, type Outlines } from "./geometry";
 import { createRenderer } from "./renderer";
+import { limitText, splitText } from "./text";
 
 function element<T extends HTMLElement>(selector: string) {
   const result = document.querySelector<T>(selector);
@@ -65,7 +66,7 @@ async function render() {
   const current = ++revision;
   stage.classList.remove("gpu-active");
   canvas.hidden = true;
-  const chars = Array.from(text.value).slice(0, 8);
+  const chars = splitText(limitText(text.value));
   const family = font.value;
   const fontSize = specimenSize(
     stage.clientWidth,
@@ -166,11 +167,11 @@ function schedule() {
 }
 for (const input of [text, font, size, stroke, spacing]) input.addEventListener("input", schedule);
 text.addEventListener("compositionend", () => {
-  text.value = Array.from(text.value).slice(0, 8).join("");
+  text.value = limitText(text.value);
   schedule();
 });
 text.addEventListener("input", (event) => {
-  if (!(event as InputEvent).isComposing) text.value = Array.from(text.value).slice(0, 8).join("");
+  if (!(event as InputEvent).isComposing) text.value = limitText(text.value);
 });
 document.querySelectorAll<HTMLButtonElement>("[data-text]").forEach((button) => {
   button.addEventListener("click", () => {
