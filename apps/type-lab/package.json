@@ -1,0 +1,21 @@
+{
+  "name": "type-lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev --host 0.0.0.0",
+    "build": "tsc && vp build",
+    "test": "vp test run",
+    "preview": "vp preview --host 0.0.0.0",
+    "deploy": "void deploy --platform cloudflare"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@webgpu/types": "^0.1.69",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "void": "catalog:"
+  }
+}

@@ -30,6 +30,7 @@ jobs:
     outputs:
       blog: ${{ steps.blog.outputs.url }}
       field-desk: ${{ steps.field-desk.outputs.url }}
+      type-lab: ${{ steps.type-lab.outputs.url }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -48,6 +49,8 @@ jobs:
             .cloudflare/output/v0/workers/default/worker.config.json > /dev/null
       - name: Build Field Desk
         run: vp run field-desk#build
+      - name: Build Type Lab
+        run: vp run type-lab#build
       - name: Deploy blog Preview
         id: blog
         working-directory: apps/blog
@@ -66,13 +69,24 @@ jobs:
           result=$("$GITHUB_WORKSPACE/node_modules/.bin/cf" previews deploy ./dist --preview-name "pr-${PR_NUMBER}")
           url=$(jq -er 'first(.preview_urls[] | strings | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$")))' <<< "$result")
           echo "url=${url%/}" >> "$GITHUB_OUTPUT"
+      - name: Deploy Type Lab Preview
+        id: type-lab
+        working-directory: apps/type-lab
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          result=$("$GITHUB_WORKSPACE/node_modules/.bin/cf" previews deploy ./dist --preview-name "pr-${PR_NUMBER}")
+          url=$(jq -er 'first(.preview_urls[] | strings | select(test("^https://[a-z0-9.-]+\\.workers\\.dev/?$")))' <<< "$result")
+          echo "url=${url%/}" >> "$GITHUB_OUTPUT"
       - name: Smoke-test Preview URLs
         env:
           BLOG_URL: ${{ steps.blog.outputs.url }}
           FIELD_DESK_URL: ${{ steps.field-desk.outputs.url }}
+          TYPE_LAB_URL: ${{ steps.type-lab.outputs.url }}
         run: |
           curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 2 --max-time 15 "${BLOG_URL}/posts" > /dev/null
           curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 2 --max-time 15 "${FIELD_DESK_URL}/" > /dev/null
+          curl --fail --silent --show-error --retry 6 --retry-all-errors --retry-delay 2 --max-time 15 "${TYPE_LAB_URL}/" > /dev/null
 
   comment:
     needs: deploy
@@ -85,11 +99,12 @@ jobs:
       GH_REPO: ${{ github.repository }}
       BLOG_URL: ${{ needs.deploy.outputs.blog }}
       FIELD_DESK_URL: ${{ needs.deploy.outputs.field-desk }}
+      TYPE_LAB_URL: ${{ needs.deploy.outputs.type-lab }}
     steps:
       - name: Post or update Preview links
         run: |
           marker='<!-- cloudflare-pr-previews -->'
-          body=$(printf '%s\n\n**Cloudflare Previews**\n\n- [Blog](%s/)\n- [Field Desk](%s/)\n' "$marker" "$BLOG_URL" "$FIELD_DESK_URL")
+          body=$(printf '%s\n\n**Cloudflare Previews**\n\n- [Blog](%s/)\n- [Field Desk](%s/)\n- [Type Lab](%s/)\n' "$marker" "$BLOG_URL" "$FIELD_DESK_URL" "$TYPE_LAB_URL")
           comments="/repos/${GH_REPO}/issues/${PR_NUMBER}/comments"
           comment_id=$(gh api --paginate --slurp "$comments" | jq -r --arg marker "$marker" \
             '[.[][] | select(.user.login == "github-actions[bot]" and (.body | startswith($marker)))][0].id // empty')
@@ -112,7 +127,7 @@ jobs:
       - name: Delete closed PR Previews
         run: |
           failed=0
-          for worker in blog field-desk; do
+          for worker in blog field-desk type-lab; do
             endpoint="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/workers/workers/${worker}/previews/pr-${PR_NUMBER}"
             status=$(curl --silent --show-error --retry 3 --max-time 20 \
               --output response.json --write-out '%{http_code}' --request DELETE \

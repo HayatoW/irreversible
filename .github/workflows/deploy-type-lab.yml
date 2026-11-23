@@ -1,0 +1,40 @@
+name: Deploy Type Lab
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - apps/type-lab/**
+      - .github/workflows/deploy-type-lab.yml
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency: type-lab-deploy
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          node-version: "24"
+          cache: true
+      - name: Build Type Lab
+        run: vp run type-lab#build
+      - name: Deploy Type Lab to Cloudflare
+        working-directory: apps/type-lab
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_WORKERS_SUBDOMAIN: irreversible
+        run: vp run deploy --dir dist --spa

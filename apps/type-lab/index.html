@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="和文の輪郭を、WebGPUで観察する。明朝とゴシック、塗りと線、縦組みと横組みを試す日本語タイポグラフィ実験室。"
+    />
+    <meta name="theme-color" content="#f3f1eb" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/serif.woff2" as="font" type="font/woff2" crossorigin />
+    <title>字形 — Japanese Type Lab</title>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <a class="wordmark" href="/" aria-label="字形 ホーム"
+          ><span class="mark" aria-hidden="true">字</span
+          ><span>字形<span class="wordmark-en">JIGATA / TYPE LAB</span></span></a
+        >
+        <nav aria-label="関連リンク">
+          <a href="https://domgl-text.jesperlandberg.com/">Inspired by Glyph ↗</a
+          ><a href="https://github.com/HayatoW/irreversible">GitHub ↗</a>
+        </nav>
+      </header>
+      <main>
+        <section class="intro" aria-labelledby="title">
+          <div>
+            <p class="eyebrow"><span class="dot"></span> EXPERIMENT 02 — JAPANESE TYPOGRAPHY</p>
+            <h1 id="title">文字の、<br />奥行きへ<span class="period">。</span></h1>
+          </div>
+          <div class="intro-copy">
+            <p class="intro-kicker">A closer look at every stroke.</p>
+            <p>
+              一画の先に、ひろがる世界。<br />明朝のうろこ、複雑な漢字の余白。<br />和文のかたちを、GPUでほどいてみる。
+            </p>
+            <a class="jump" href="#lab">実験をはじめる <span>↓</span></a>
+          </div>
+          <span class="hero-index" aria-hidden="true">あ<br />A</span>
+        </section>
+
+        <section class="lab" id="lab" aria-labelledby="lab-title">
+          <header class="lab-header">
+            <h2 id="lab-title"><span>01</span> 字形を観察する</h2>
+            <span class="engine" id="engine" role="status"><i></i> DOM / 準備中</span>
+          </header>
+          <div class="workbench">
+            <div class="preview-column">
+              <div class="specimen-toolbar">
+                <span class="mono">SPECIMEN <span id="specimen-id">001</span></span>
+                <div class="segmented" role="group" aria-label="描画方法">
+                  <button type="button" data-mode="outline" aria-pressed="true">輪郭</button
+                  ><button type="button" data-mode="fill" aria-pressed="false">塗り</button>
+                </div>
+              </div>
+              <div class="viewport" id="viewport">
+                <div class="stage" id="stage">
+                  <div class="specimen" id="specimen" aria-label="試し組み"></div>
+                  <canvas id="canvas" aria-hidden="true"></canvas>
+                </div>
+                <span class="axis axis-x" aria-hidden="true">X</span
+                ><span class="axis axis-y" aria-hidden="true">Y</span>
+              </div>
+              <div class="specimen-caption">
+                <p>
+                  <span class="cross">+</span>
+                  <span id="font-caption">Noto Serif JP / Regular</span>
+                </p>
+                <span class="mono" id="size-caption">240 PX</span>
+              </div>
+              <p class="render-note" id="render-note" role="status">
+                フォントを読み込んでいます。文字はDOMでも表示されます。
+              </p>
+            </div>
+            <aside class="controls" aria-label="組版の設定">
+              <div class="control-section">
+                <label class="field-label" for="text">試し組み <span>TEXT / 8字まで</span></label
+                ><input
+                  id="text"
+                  type="text"
+                  value="鬱龍響"
+                  maxlength="16"
+                  autocomplete="off"
+                  spellcheck="false"
+                  aria-describedby="text-help"
+                />
+                <p class="field-help" id="text-help">漢字、かな、英数字を自由に。</p>
+                <div class="presets" role="group" aria-label="サンプル文字">
+                  <button type="button" data-text="鬱龍響" aria-pressed="true">鬱龍響</button
+                  ><button type="button" data-text="永字八法" aria-pressed="false">永字八法</button
+                  ><button type="button" data-text="花鳥風月" aria-pressed="false">花鳥風月</button
+                  ><button type="button" data-text="あいうえお" aria-pressed="false">
+                    あいうえお
+                  </button>
+                </div>
+              </div>
+              <div class="control-section">
+                <label class="field-label" for="font">書体 <span>TYPEFACE</span></label
+                ><select id="font">
+                  <option value="serif">明朝 — Noto Serif JP</option>
+                  <option value="sans">ゴシック — Noto Sans JP</option>
+                </select>
+              </div>
+              <div class="control-section ranges">
+                <label class="field-label" for="size"
+                  >文字サイズ <output id="size-output" for="size">240 px</output></label
+                ><input type="range" id="size" min="48" max="360" step="1" value="240" />
+                <label class="field-label" for="stroke"
+                  >線の太さ <output id="stroke-output" for="stroke">0.8 px</output></label
+                ><input type="range" id="stroke" min="0.3" max="3" step="0.1" value="0.8" />
+                <label class="field-label" for="spacing"
+                  >字間 <output id="spacing-output" for="spacing">8 px</output></label
+                ><input type="range" id="spacing" min="0" max="32" step="1" value="8" />
+              </div>
+              <div class="control-section">
+                <span class="field-label" id="direction-label"
+                  >組み方向 <span>DIRECTION</span></span
+                >
+                <div class="segmented direction" role="group" aria-labelledby="direction-label">
+                  <button type="button" data-direction="horizontal" aria-pressed="true">
+                    横組み <span>→</span></button
+                  ><button type="button" data-direction="vertical" aria-pressed="false">
+                    縦積み <span>↓</span>
+                  </button>
+                </div>
+                <p class="field-help">縦積みは一字ずつ配置。縦用字形は使いません。</p>
+              </div>
+              <button type="button" id="reset" class="reset">設定をリセット <span>↺</span></button>
+            </aside>
+          </div>
+          <footer class="lab-footer">
+            <span class="mono">LIVE OUTLINE STUDY</span>
+            <dl>
+              <div>
+                <dt>文字</dt>
+                <dd id="glyph-count">3</dd>
+              </div>
+              <div>
+                <dt>線分</dt>
+                <dd id="edge-count">—</dd>
+              </div>
+              <div>
+                <dt>描画</dt>
+                <dd id="render-type">DOM</dd>
+              </div>
+            </dl>
+          </footer>
+        </section>
+
+        <section class="notes" aria-label="この実験について">
+          <div class="notes-heading">
+            <p class="eyebrow">BEHIND THE LETTERS</p>
+            <h2>読む、から<br />眺める、へ。</h2>
+          </div>
+          <article>
+            <span class="note-number">01 / SHAPE</span>
+            <h3>輪郭から描く。</h3>
+            <p>
+              フォントの曲線を細かな線分に分解し、WebGPUで内外と輪郭までの距離を計算。画像を引き伸ばさず、文字のかたちを描き直します。
+            </p>
+          </article>
+          <article>
+            <span class="note-number">02 / TYPE</span>
+            <h3>複雑さを楽しむ。</h3>
+            <p>
+              同じ「鬱」でも、明朝とゴシックでは違う表情に。文字サイズや線の太さを変えて、画と画のあいだにある余白を観察してください。
+            </p>
+          </article>
+          <article>
+            <span class="note-number">03 / OPEN</span>
+            <h3>文字は、文字のまま。</h3>
+            <p>
+              表示の下には選択できるDOMテキスト。WebGPUが使えない環境や未収録の文字でも、ブラウザの文字表示に切り替わります。
+            </p>
+          </article>
+        </section>
+      </main>
+      <footer class="site-footer">
+        <p>字形 <span>JIGATA — AN IRREVERSIBLE EXPERIMENT</span></p>
+        <a href="/fonts/serif-OFL.txt">Noto fonts / SIL Open Font License ↗</a
+        ><span>日本語のかたちを探る。</span>
+      </footer>
+    </div>
+  </body>
+</html>
