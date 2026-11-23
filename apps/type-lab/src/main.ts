@@ -75,7 +75,7 @@ async function render() {
     Number(spacing.value),
     vertical,
   );
-  specimen.style.fontFamily = `"Lab ${family}", serif`;
+  specimen.style.fontFamily = `"Lab ${family}", ${family === "sans" ? "sans-serif" : "serif"}`;
   specimen.style.fontSize = `${fontSize}px`;
   specimen.style.setProperty(
     "--spacing",
