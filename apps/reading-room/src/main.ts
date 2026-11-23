@@ -64,11 +64,11 @@ buttons.forEach((button) =>
 seam.addEventListener("input", () => setSplit(Number(seam.value)));
 picker.addEventListener("change", selectArticle);
 window.addEventListener("resize", () => setSplit(split));
-// Browser find and printing should show the original, unobscured text.
+// Browser find shows native text. Print CSS hides the overlay without
+// changing the on-screen split, including when print preview is cancelled.
 window.addEventListener("keydown", (event) => {
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "f") setSplit(100);
 });
-window.addEventListener("beforeprint", () => setSplit(100));
 window.addEventListener("pagehide", (event) => {
   if (!event.persisted) renderer?.dispose();
 });
