@@ -301,9 +301,8 @@ h1 {
   padding: 42px 24px;
 }
 .specimen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  white-space: nowrap;
   position: relative;
   color: var(--accent);
   z-index: 1;
@@ -313,11 +312,21 @@ h1 {
   line-height: 1;
 }
 .glyph {
-  display: block;
+  display: inline-block;
+  vertical-align: top;
   width: 1em;
   height: 1em;
-  flex: 0 0 auto;
   white-space: pre;
+}
+.glyph:not(:last-child) {
+  margin-right: var(--spacing);
+}
+.specimen[data-direction="vertical"] .glyph {
+  display: block;
+  margin-right: 0;
+}
+.specimen[data-direction="vertical"] .glyph:not(:last-child) {
+  margin-bottom: var(--spacing);
 }
 .stage[data-mode="outline"] .glyph {
   -webkit-text-stroke: var(--stroke, 0.8px) var(--accent);

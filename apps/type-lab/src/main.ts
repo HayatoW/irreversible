@@ -76,8 +76,11 @@ async function render() {
   );
   specimen.style.fontFamily = `"Lab ${family}", serif`;
   specimen.style.fontSize = `${fontSize}px`;
-  specimen.style.gap = `${(Number(spacing.value) * fontSize) / Number(size.value)}px`;
-  specimen.style.flexDirection = vertical ? "column" : "row";
+  specimen.style.setProperty(
+    "--spacing",
+    `${(Number(spacing.value) * fontSize) / Number(size.value)}px`,
+  );
+  specimen.dataset.direction = vertical ? "vertical" : "horizontal";
   specimen.replaceChildren(
     ...chars.map((char) => {
       const span = document.createElement("span");
