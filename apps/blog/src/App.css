@@ -89,8 +89,7 @@ body .void-md {
     text-transform: uppercase;
   }
 
-  .home-title-glitch,
-  .home-title-glitch-toggle {
+  .home-title-glitch {
     display: none;
   }
 
@@ -123,10 +122,6 @@ body .void-md {
   }
 
   @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
-    .home-title-glitch-toggle {
-      display: inline-flex;
-    }
-
     .home-title-glitch {
       position: absolute;
       inset: 0;
@@ -152,10 +147,6 @@ body .void-md {
       color: #e53162;
       clip-path: inset(57% 0 24%);
       --glitch-offset: 0.12em;
-    }
-
-    .home-title-group:has(> .home-title-glitch-toggle input:checked) .home-title-glitch {
-      display: none;
     }
   }
 }
