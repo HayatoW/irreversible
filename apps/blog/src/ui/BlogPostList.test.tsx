@@ -5,8 +5,11 @@ import userEvent from "@testing-library/user-event";
 import { settle } from "@ui-sdk/core/testing";
 import { createAgent } from "@ui-sdk/react/agent";
 import { renderToStaticMarkup } from "react-dom/server";
-import { afterEach, expect, test } from "vite-plus/test";
+import { afterEach, expect, test, vi } from "vite-plus/test";
+import HomePage from "../../pages/index.tsx";
 import BlogPostList from "./BlogPostList.tsx";
+
+vi.mock("../lib/blogPosts.ts", () => ({ blogPosts: [] }));
 
 declare global {
   var __UI_SDK_STRICT__: boolean | undefined;
@@ -27,6 +30,13 @@ const posts = ["first", "second", "third"].map((title) => ({
 }));
 
 afterEach(cleanup);
+
+test("the home page exposes its styled site title as a single heading", () => {
+  render(<HomePage />);
+  const headings = screen.getAllByRole("heading", { level: 1 });
+  expect(headings).toEqual([screen.getByRole("heading", { level: 1, name: "Irreversible" })]);
+  expect(headings[0]?.classList.contains("home-title")).toBe(true);
+});
 
 test("renders post links on the server with one tab stop", () => {
   const html = renderToStaticMarkup(<BlogPostList posts={posts} />);
