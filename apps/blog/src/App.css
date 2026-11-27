@@ -130,7 +130,9 @@ body .void-md {
       user-select: none;
     }
 
-    .home-title-glitch > span {
+    .home-title-glitch::before,
+    .home-title-glitch::after {
+      content: attr(data-text);
       position: absolute;
       inset: 0;
       opacity: 0;
@@ -141,7 +143,7 @@ body .void-md {
       animation: home-title-glitch 3s steps(1, end);
     }
 
-    .home-title-glitch > span + span {
+    .home-title-glitch::after {
       color: #e53162;
       clip-path: inset(57% 0 24%);
       --glitch-offset: 0.12em;

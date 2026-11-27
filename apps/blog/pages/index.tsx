@@ -10,10 +10,7 @@ export default function HomePage() {
     <>
       <h1 className="home-title">
         <span>{title}</span>
-        <span aria-hidden="true" className="home-title-glitch">
-          <span>{title}</span>
-          <span>{title}</span>
-        </span>
+        <span aria-hidden="true" className="home-title-glitch" data-text={title} />
       </h1>
       <p className="mt-5 max-w-prose text-lg text-muted-foreground">
         Hello Friend. I build software and share my place with two cats. When I'm not coding, I'm
