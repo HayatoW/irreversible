@@ -89,7 +89,8 @@ body .void-md {
     text-transform: uppercase;
   }
 
-  .home-title-glitch {
+  .home-title-glitch,
+  .home-title-glitch-toggle {
     display: none;
   }
 
@@ -122,6 +123,10 @@ body .void-md {
   }
 
   @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+    .home-title-glitch-toggle {
+      display: inline-flex;
+    }
+
     .home-title-glitch {
       position: absolute;
       inset: 0;
@@ -140,7 +145,7 @@ body .void-md {
       text-shadow: none;
       clip-path: inset(24% 0 55%);
       --glitch-offset: -0.12em;
-      animation: home-title-glitch 3s steps(1, end);
+      animation: home-title-glitch 10s steps(1, end) infinite;
     }
 
     .home-title-glitch::after {
@@ -148,24 +153,27 @@ body .void-md {
       clip-path: inset(57% 0 24%);
       --glitch-offset: 0.12em;
     }
+
+    .home-title-group:has(> .home-title-glitch-toggle input:checked) .home-title-glitch {
+      display: none;
+    }
   }
 }
 
 @keyframes home-title-glitch {
   0%,
-  35%,
-  76%,
+  14%,
   100% {
     opacity: 0;
     transform: none;
   }
 
-  31% {
+  10% {
     opacity: 0.85;
     transform: translateX(var(--glitch-offset));
   }
 
-  72% {
+  12% {
     opacity: 0.7;
     transform: translateX(calc(var(--glitch-offset) * -0.65));
   }

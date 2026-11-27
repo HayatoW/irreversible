@@ -42,6 +42,14 @@ test("the home page exposes its styled site title as a single heading", () => {
   );
 });
 
+test("the home page exposes a labeled control for pausing the title effect", async () => {
+  render(<HomePage />);
+  const pause = screen.getByRole<HTMLInputElement>("checkbox", { name: "Pause title effect" });
+  expect(pause.checked).toBe(false);
+  await userEvent.setup().click(pause);
+  expect(pause.checked).toBe(true);
+});
+
 test("renders post links on the server with one tab stop", () => {
   const html = renderToStaticMarkup(<BlogPostList posts={posts} />);
   expect(html).toContain('aria-label="Blog posts"');
