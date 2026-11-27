@@ -36,6 +36,7 @@ test("the home page exposes its styled site title as a single heading", () => {
   const headings = screen.getAllByRole("heading", { level: 1 });
   expect(headings).toEqual([screen.getByRole("heading", { level: 1, name: "Irreversible" })]);
   expect(headings[0]?.classList.contains("home-title")).toBe(true);
+  expect(headings[0]?.querySelector('[aria-hidden="true"]')?.textContent).toContain("Irreversible");
 });
 
 test("renders post links on the server with one tab stop", () => {

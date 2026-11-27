@@ -4,9 +4,17 @@ import BlogPostList from "../src/ui/BlogPostList.tsx";
 export const layout = "!portfolio";
 
 export default function HomePage() {
+  const title = "Irreversible";
+
   return (
     <>
-      <h1 className="home-title">Irreversible</h1>
+      <h1 className="home-title">
+        <span>{title}</span>
+        <span aria-hidden="true" className="home-title-glitch">
+          <span>{title}</span>
+          <span>{title}</span>
+        </span>
+      </h1>
       <p className="mt-5 max-w-prose text-lg text-muted-foreground">
         Hello Friend. I build software and share my place with two cats. When I'm not coding, I'm
         usually listening to These New Puritans or Nils Frahm, or thinking about design—especially
